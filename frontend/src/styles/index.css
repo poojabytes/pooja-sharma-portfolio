@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: #f4f5f8;
+    --color-surface: #ffffff;
+    --color-foreground: #0b0d12;
+    --color-muted: #52525b;
+    --color-accent: #6d5ef8;
+    --color-border: rgba(11, 13, 18, 0.08);
+  }
+
+  .dark {
+    --color-bg: #0b0d12;
+    --color-surface: #151923;
+    --color-foreground: #ffffff;
+    --color-muted: #a1a1aa;
+    --color-accent: #8b7cff;
+    --color-border: rgba(255, 255, 255, 0.08);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen antialiased;
+    background-color: var(--color-bg);
+    color: var(--color-foreground);
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  }
+}
+
+@layer components {
+  .bento-card {
+    @apply rounded-2xl border p-6 transition-shadow duration-300;
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .bento-card:hover {
+    @apply shadow-lg;
+    box-shadow: 0 16px 40px color-mix(in srgb, var(--color-accent) 12%, transparent);
+  }
+
+  .section-anchor {
+    scroll-margin-top: 5.5rem;
+  }
+}

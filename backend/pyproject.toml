@@ -1,0 +1,14 @@
+[project]
+name = "pooja-portfolio-backend"
+version = "0.1.0"
+description = "FastAPI backend for Pooja Sharma portfolio"
+requires-python = ">=3.12"
+readme = "README.md"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
