@@ -1,5 +1,5 @@
 export const SITE = {
   name: "Pooja Sharma",
-  headline: "Full-Stack Developer (MERN) | AI/ML Enthusiast",
+  headline: "Python Backend Developer",
   title: "Pooja Sharma | Developer Portfolio",
 } as const;
