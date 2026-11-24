@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     admin_initial_password: str | None = Field(default=None, alias="ADMIN_INITIAL_PASSWORD")
 
     frontend_url: str = Field(default="http://localhost:5173", alias="FRONTEND_URL")
+    # Optional comma-separated extra origins (e.g. additional Vercel frontend aliases).
+    cors_origins_extra: str = Field(default="", alias="CORS_ORIGINS")
     api_public_url: str = Field(default="http://localhost:8000", alias="API_PUBLIC_URL")
 
     cloudinary_cloud_name: str | None = Field(default=None, alias="CLOUDINARY_CLOUD_NAME")
@@ -48,7 +50,15 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins(self) -> list[str]:
-        return [self.frontend_url.rstrip("/")]
+        origins = [self.frontend_url.rstrip("/")]
+        if self.cors_origins_extra.strip():
+            origins.extend(
+                o.strip().rstrip("/")
+                for o in self.cors_origins_extra.split(",")
+                if o.strip()
+            )
+        # Preserve order, drop duplicates
+        return list(dict.fromkeys(origins))
 
     @property
     def resolved_cookie_secure(self) -> bool:
