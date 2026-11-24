@@ -27,7 +27,7 @@ dev = [
 ]
 
 [tool.vercel]
-entrypoint = "index.py"
+entrypoint = "index:app"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
