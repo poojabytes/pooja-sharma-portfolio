@@ -251,19 +251,19 @@ export default function HeroSection({
               <div className="aspect-square w-full rounded-full border border-accent/25" />
             </div>
 
-            {/* Portrait */}
-            <div className="absolute bottom-0 left-1/2 h-[94%] -translate-x-1/2">
+            {/* Portrait — clipped to the peach disc so full-body photos stay clean */}
+            <div className="absolute bottom-0 left-1/2 h-[94%] w-[min(40rem,104vw)] -translate-x-1/2 overflow-hidden rounded-full">
               <motion.img
                 src={portrait}
                 alt={`Portrait of ${fullName}`}
                 width={768}
-                height={962}
+                height={1024}
                 loading="eager"
                 style={{ x: photoX, y: photoY }}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className={`h-full w-auto max-w-none select-none object-contain object-bottom ${portraitBlend}`}
+                className={`h-full w-full select-none object-cover object-[center_12%] ${portraitBlend}`}
                 draggable={false}
               />
             </div>
