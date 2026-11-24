@@ -15,7 +15,9 @@ const pill =
 export default function ProjectCard({ project, className = "" }: Props) {
   const tech = splitTechnologies(project.technologies);
   const primaryUrl = project.live_url ?? project.github_url;
-  const tall = project.is_featured ? "min-h-[28rem] md:min-h-[34rem]" : "min-h-[24rem] md:min-h-[26rem]";
+  const tall = project.is_featured
+    ? "min-h-[22rem] sm:min-h-[26rem] md:min-h-[34rem]"
+    : "min-h-[20rem] sm:min-h-[24rem] md:min-h-[26rem]";
 
   return (
     <TiltCard
@@ -67,9 +69,9 @@ export default function ProjectCard({ project, className = "" }: Props) {
       ) : null}
 
       {/* Content */}
-      <div className="relative z-10 flex h-full flex-col justify-end p-6 text-white md:p-8">
+      <div className="relative z-10 flex h-full flex-col justify-end p-5 text-white sm:p-6 md:p-8">
         {tech.length > 0 ? (
-          <ul className="mb-4 flex flex-wrap gap-1.5">
+          <ul className="mb-3 flex flex-wrap gap-1.5 sm:mb-4">
             {tech.slice(0, project.is_featured ? 8 : 5).map((t) => (
               <li
                 key={t}
@@ -81,10 +83,10 @@ export default function ProjectCard({ project, className = "" }: Props) {
           </ul>
         ) : null}
 
-        <div className="flex items-end justify-between gap-4">
+        <div className="flex items-end justify-between gap-3 sm:gap-4">
           <h3
             className={`font-display font-extrabold leading-tight transition-transform duration-500 ease-out group-hover:-translate-y-1 ${
-              project.is_featured ? "text-3xl md:text-4xl" : "text-2xl md:text-3xl"
+              project.is_featured ? "text-2xl sm:text-3xl md:text-4xl" : "text-xl sm:text-2xl md:text-3xl"
             }`}
           >
             <span className="hover-underline pb-1">{project.title}</span>

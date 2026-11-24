@@ -24,7 +24,7 @@ export default function FeaturedProjectsSection({
         index="03"
         title="Selected work."
         highlight={["work"]}
-        description="Highlighted builds with links to repositories and live demos."
+        description="Live deployments — portfolio, resume analyzer, job portals, and more."
       />
       {projects.length > 0 ? (
         <ProjectsShowcase projects={projects} />

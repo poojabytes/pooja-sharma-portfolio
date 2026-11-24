@@ -218,7 +218,7 @@ export default function HeroSection({
             />
           </svg>
 
-          <h1 className="font-display text-[2.4rem] font-extrabold leading-[1.04] tracking-tight sm:text-6xl lg:text-7xl">
+          <h1 className="font-display text-[2.1rem] font-extrabold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             <SplitText
               text={`I'm ${firstName},`}
               highlight={[firstName]}
@@ -231,126 +231,155 @@ export default function HeroSection({
         </div>
 
         {/* Portrait stage */}
-        <div className="relative mx-auto mt-8 h-[27rem] w-full max-w-5xl sm:h-[31rem] lg:h-[35rem]">
-          <div className="absolute inset-0 overflow-hidden">
-            {/* Peach disc */}
-            <div className="absolute bottom-0 left-1/2 w-[min(35rem,94vw)] -translate-x-1/2 translate-y-[36%]">
-              <motion.div
-                style={{ x: discX, y: discY }}
-                initial={{ scale: 0.7, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="aspect-square w-full rounded-full bg-[rgb(var(--c-peach))]"
-              />
+        <div className="relative mx-auto mt-6 w-full max-w-5xl overflow-hidden sm:mt-8">
+          <div className="relative mx-auto h-[22rem] w-full max-w-[22rem] sm:h-[28rem] sm:max-w-[28rem] lg:h-[35rem] lg:max-w-5xl">
+            <div className="absolute inset-0 overflow-hidden">
+              {/* Peach disc */}
+              <div className="absolute bottom-0 left-1/2 w-[min(35rem,92%)] -translate-x-1/2 translate-y-[36%]">
+                <motion.div
+                  style={{ x: discX, y: discY }}
+                  initial={{ scale: 0.7, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="aspect-square w-full rounded-full bg-[rgb(var(--c-peach))]"
+                />
+              </div>
+              {/* Thin decorative outline around the disc */}
+              <div
+                aria-hidden
+                className="absolute bottom-0 left-1/2 w-[min(40rem,100%)] -translate-x-1/2 translate-y-[38%]"
+              >
+                <div className="aspect-square w-full rounded-full border border-accent/25" />
+              </div>
+
+              {/* Portrait — clipped to the peach disc so full-body photos stay clean */}
+              <div className="absolute bottom-0 left-1/2 h-[94%] w-[min(40rem,100%)] -translate-x-1/2 overflow-hidden rounded-full">
+                <motion.img
+                  src={portrait}
+                  alt={`Portrait of ${fullName}`}
+                  width={768}
+                  height={1024}
+                  loading="eager"
+                  style={{ x: photoX, y: photoY }}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className={`h-full w-full select-none object-cover object-[center_12%] ${portraitBlend}`}
+                  draggable={false}
+                />
+              </div>
             </div>
-            {/* Thin decorative outline around the disc */}
+
+            {/* Gently floating decorative circles */}
             <div
               aria-hidden
-              className="absolute bottom-0 left-1/2 w-[min(40rem,104vw)] -translate-x-1/2 translate-y-[38%]"
+              className="absolute left-[27%] top-[42%] hidden h-5 w-5 animate-float rounded-full bg-accent-2 lg:block"
+            />
+            <div
+              aria-hidden
+              className="absolute right-[26%] top-[14%] hidden h-9 w-9 animate-float rounded-full border-2 border-accent/50 lg:block"
+              style={{ animationDelay: "1.4s" }}
+            />
+            <div
+              aria-hidden
+              className="absolute right-[31%] top-[48%] hidden h-3 w-3 animate-float rounded-full bg-accent lg:block"
+              style={{ animationDelay: "0.8s" }}
+            />
+
+            {/* Floating badges (real skills) */}
+            {badges.map((label, i) => (
+              <FloatingBadge key={`${label}-${i}`} label={label} slot={BADGE_SLOTS[i]} px={px} py={py} />
+            ))}
+
+            {/* Side blocks (desktop) */}
+            <motion.div
+              initial={{ opacity: 0, x: -24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7, duration: 0.7 }}
+              className="absolute left-0 top-[18%] z-10 hidden text-left lg:block"
             >
-              <div className="aspect-square w-full rounded-full border border-accent/25" />
-            </div>
+              {quote}
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.8, duration: 0.7 }}
+              className="absolute right-0 top-[18%] z-10 hidden text-right lg:block"
+            >
+              {stats}
+            </motion.div>
 
-            {/* Portrait — clipped to the peach disc so full-body photos stay clean */}
-            <div className="absolute bottom-0 left-1/2 h-[94%] w-[min(40rem,104vw)] -translate-x-1/2 overflow-hidden rounded-full">
-              <motion.img
-                src={portrait}
-                alt={`Portrait of ${fullName}`}
-                width={768}
-                height={1024}
-                loading="eager"
-                style={{ x: photoX, y: photoY }}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className={`h-full w-full select-none object-cover object-[center_12%] ${portraitBlend}`}
-                draggable={false}
-              />
-            </div>
-          </div>
-
-          {/* Gently floating decorative circles */}
-          <div
-            aria-hidden
-            className="absolute left-[27%] top-[42%] hidden h-5 w-5 animate-float rounded-full bg-accent-2 lg:block"
-          />
-          <div
-            aria-hidden
-            className="absolute right-[26%] top-[14%] hidden h-9 w-9 animate-float rounded-full border-2 border-accent/50 lg:block"
-            style={{ animationDelay: "1.4s" }}
-          />
-          <div
-            aria-hidden
-            className="absolute right-[31%] top-[48%] hidden h-3 w-3 animate-float rounded-full bg-accent lg:block"
-            style={{ animationDelay: "0.8s" }}
-          />
-
-          {/* Floating badges (real skills) */}
-          {badges.map((label, i) => (
-            <FloatingBadge key={`${label}-${i}`} label={label} slot={BADGE_SLOTS[i]} px={px} py={py} />
-          ))}
-
-          {/* Side blocks (desktop) */}
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.7, duration: 0.7 }}
-            className="absolute left-0 top-[18%] z-10 hidden text-left lg:block"
-          >
-            {quote}
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.8, duration: 0.7 }}
-            className="absolute right-0 top-[18%] z-10 hidden text-right lg:block"
-          >
-            {stats}
-          </motion.div>
-
-          {/* Buttons overlapping the portrait */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.6 }}
-            className="absolute inset-x-0 bottom-5 z-20 flex flex-wrap items-center justify-center gap-3"
-          >
-            <Magnetic>
-              <HashLink id="projects" className="btn-primary group">
-                Portfolio
-                <ArrowUpRight
-                  className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                  aria-hidden
-                />
-              </HashLink>
-            </Magnetic>
-            <Magnetic>
-              <HashLink id="contact" className="btn-ghost !bg-white !text-[#2B1B18]">
-                Hire Me
-              </HashLink>
-            </Magnetic>
-            {resume ? (
+            {/* Buttons overlapping the portrait — desktop / large tablets */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9, duration: 0.6 }}
+              className="absolute inset-x-0 bottom-5 z-20 hidden flex-wrap items-center justify-center gap-3 sm:flex"
+            >
               <Magnetic>
-                <a
-                  href={mediaUrl(resume.file_url)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-ghost group !bg-white !text-[#2B1B18]"
-                >
-                  <Download
-                    className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"
+                <HashLink id="projects" className="btn-primary group">
+                  Portfolio
+                  <ArrowUpRight
+                    className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                     aria-hidden
                   />
-                  Resume
-                </a>
+                </HashLink>
               </Magnetic>
+              <Magnetic>
+                <HashLink id="contact" className="btn-ghost !bg-white !text-[#2B1B18]">
+                  Hire Me
+                </HashLink>
+              </Magnetic>
+              {resume ? (
+                <Magnetic>
+                  <a
+                    href={mediaUrl(resume.file_url)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-ghost group !bg-white !text-[#2B1B18]"
+                  >
+                    <Download
+                      className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"
+                      aria-hidden
+                    />
+                    Resume
+                  </a>
+                </Magnetic>
+              ) : null}
+            </motion.div>
+          </div>
+
+          {/* Mobile CTAs sit below the portrait so they never collide with the photo */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.85, duration: 0.5 }}
+            className="mt-5 flex flex-wrap items-center justify-center gap-2.5 sm:hidden"
+          >
+            <HashLink id="projects" className="btn-primary group !px-5 !py-2.5 text-sm">
+              Portfolio
+              <ArrowUpRight className="h-4 w-4" aria-hidden />
+            </HashLink>
+            <HashLink id="contact" className="btn-ghost !px-5 !py-2.5 text-sm">
+              Hire Me
+            </HashLink>
+            {resume ? (
+              <a
+                href={mediaUrl(resume.file_url)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost group !px-5 !py-2.5 text-sm"
+              >
+                <Download className="h-4 w-4" aria-hidden />
+                Resume
+              </a>
             ) : null}
           </motion.div>
         </div>
       </div>
 
       {/* Quote + stats below the stage on tablet / mobile */}
-      <div className="mx-auto grid max-w-xl gap-8 px-6 pb-14 pt-10 text-left sm:grid-cols-2 lg:hidden">
+      <div className="mx-auto grid max-w-xl gap-8 px-4 pb-12 pt-8 text-left sm:grid-cols-2 sm:px-6 lg:hidden">
         {quote}
         <div className="sm:text-right">{stats}</div>
       </div>

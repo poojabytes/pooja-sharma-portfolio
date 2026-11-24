@@ -20,9 +20,9 @@ export default function Section({ id, tone = "violet", className = "", children 
   return (
     <section
       id={id}
-      className={`section-anchor relative py-20 md:py-28 ${banded ? "bg-secondary/70" : ""} ${className}`}
+      className={`section-anchor relative py-14 sm:py-20 md:py-28 ${banded ? "bg-secondary/70" : ""} ${className}`}
     >
-      <div className="relative mx-auto max-w-6xl px-4 md:px-6">{children}</div>
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-5 md:px-6">{children}</div>
     </section>
   );
 }

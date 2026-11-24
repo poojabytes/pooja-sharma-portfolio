@@ -77,7 +77,7 @@ export default function ProjectsShowcase({ projects, filterable = false }: Props
         </div>
       ) : null}
 
-      <motion.div layout className="grid gap-5 md:grid-cols-12">
+      <motion.div layout className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-12">
         <AnimatePresence mode="popLayout">
           {visible.map((project, i) => (
             <motion.div
@@ -88,7 +88,7 @@ export default function ProjectsShowcase({ projects, filterable = false }: Props
               exit={{ opacity: 0, scale: 0.92 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: (i % 3) * 0.06, ease: [0.22, 1, 0.36, 1] }}
-              className={`flex ${SPANS[i % SPANS.length]}`}
+              className={`col-span-1 flex ${SPANS[i % SPANS.length]}`}
             >
               <ProjectCard project={project} className="w-full" />
             </motion.div>
