@@ -234,26 +234,25 @@ export default function HeroSection({
         <div className="relative mx-auto mt-6 w-full max-w-5xl overflow-x-clip sm:mt-8">
           <div className="relative mx-auto h-[22rem] w-full max-w-[22rem] sm:h-[28rem] sm:max-w-[28rem] lg:h-[34rem] lg:max-w-5xl">
             <div className="absolute inset-0">
-              {/* Peach disc */}
-              <div className="absolute bottom-0 left-1/2 w-[min(34rem,94%)] -translate-x-1/2 translate-y-[36%]">
+              {/* Peach semi-circle pedestal behind the portrait */}
+              <div className="absolute bottom-0 left-1/2 w-[min(36rem,96%)] -translate-x-1/2">
                 <motion.div
                   style={{ x: discX, y: discY }}
-                  initial={{ scale: 0.7, opacity: 0 }}
+                  initial={{ scale: 0.85, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                  className="aspect-square w-full rounded-full bg-[rgb(var(--c-peach))]"
-                />
-              </div>
-              {/* Thin decorative outline around the disc */}
-              <div
-                aria-hidden
-                className="absolute bottom-0 left-1/2 w-[min(38rem,102%)] -translate-x-1/2 translate-y-[38%]"
-              >
-                <div className="aspect-square w-full rounded-full border border-accent/25" />
+                  className="relative aspect-[2/1] w-full"
+                >
+                  <div className="absolute inset-0 overflow-hidden rounded-t-full bg-[rgb(var(--c-peach))]" />
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 rounded-t-full border border-b-0 border-accent/25"
+                  />
+                </motion.div>
               </div>
 
               {/* Transparent cutout portrait */}
-              <div className="absolute bottom-0 left-1/2 h-[96%] -translate-x-1/2">
+              <div className="absolute bottom-0 left-1/2 z-[1] h-[96%] -translate-x-1/2">
                 <motion.img
                   src={portrait}
                   alt={`Portrait of ${fullName}`}
