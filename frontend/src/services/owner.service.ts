@@ -37,22 +37,22 @@ export type Overview = {
   name: string;
 };
 
-export async function adminGetOverview() {
+export async function ownerGetOverview() {
   const { data } = await apiV1.get<Overview>("/admin/overview");
   return data;
 }
 
-export async function adminGetProfile() {
+export async function ownerGetProfile() {
   const { data } = await apiV1.get<Profile>("/admin/profile");
   return data;
 }
 
-export async function adminUpdateProfile(payload: ProfileUpdate) {
+export async function ownerUpdateProfile(payload: ProfileUpdate) {
   const { data } = await apiV1.put<Profile>("/admin/profile", payload);
   return data;
 }
 
-export async function adminUploadProfilePhoto(file: File) {
+export async function ownerUploadProfilePhoto(file: File) {
   const form = new FormData();
   form.append("file", file);
   const { data } = await apiV1.post<Profile>("/admin/profile/photo", form, {
@@ -61,17 +61,17 @@ export async function adminUploadProfilePhoto(file: File) {
   return data;
 }
 
-export async function adminListSocialLinks() {
+export async function ownerListSocialLinks() {
   const { data } = await apiV1.get<SocialLink[]>("/social-links");
   return data;
 }
 
-export async function adminCreateSocialLink(payload: Omit<SocialLink, "id">) {
+export async function ownerCreateSocialLink(payload: Omit<SocialLink, "id">) {
   const { data } = await apiV1.post<SocialLink>("/admin/social-links", payload);
   return data;
 }
 
-export async function adminUpdateSocialLink(
+export async function ownerUpdateSocialLink(
   id: number,
   payload: Omit<SocialLink, "id">,
 ) {
@@ -79,30 +79,30 @@ export async function adminUpdateSocialLink(
   return data;
 }
 
-export async function adminDeleteSocialLink(id: number) {
+export async function ownerDeleteSocialLink(id: number) {
   await apiV1.delete(`/admin/social-links/${id}`);
 }
 
-export async function adminListSkills() {
+export async function ownerListSkills() {
   const { data } = await apiV1.get<Skill[]>("/skills");
   return data;
 }
 
-export async function adminCreateSkill(payload: Omit<Skill, "id">) {
+export async function ownerCreateSkill(payload: Omit<Skill, "id">) {
   const { data } = await apiV1.post<Skill>("/admin/skills", payload);
   return data;
 }
 
-export async function adminUpdateSkill(id: number, payload: Omit<Skill, "id">) {
+export async function ownerUpdateSkill(id: number, payload: Omit<Skill, "id">) {
   const { data } = await apiV1.put<Skill>(`/admin/skills/${id}`, payload);
   return data;
 }
 
-export async function adminDeleteSkill(id: number) {
+export async function ownerDeleteSkill(id: number) {
   await apiV1.delete(`/admin/skills/${id}`);
 }
 
-export async function adminListProjects() {
+export async function ownerListProjects() {
   const { data } = await apiV1.get<Project[]>("/projects");
   return data;
 }
@@ -118,21 +118,21 @@ export type ProjectCreatePayload = {
   thumbnail_url?: string | null;
 };
 
-export async function adminCreateProject(payload: ProjectCreatePayload) {
+export async function ownerCreateProject(payload: ProjectCreatePayload) {
   const { data } = await apiV1.post<Project>("/admin/projects", payload);
   return data;
 }
 
-export async function adminUpdateProject(id: number, payload: ProjectCreatePayload) {
+export async function ownerUpdateProject(id: number, payload: ProjectCreatePayload) {
   const { data } = await apiV1.put<Project>(`/admin/projects/${id}`, payload);
   return data;
 }
 
-export async function adminDeleteProject(id: number) {
+export async function ownerDeleteProject(id: number) {
   await apiV1.delete(`/admin/projects/${id}`);
 }
 
-export async function adminUploadProjectThumbnail(id: number, file: File) {
+export async function ownerUploadProjectThumbnail(id: number, file: File) {
   const form = new FormData();
   form.append("file", file);
   const { data } = await apiV1.post<Project>(`/admin/projects/${id}/thumbnail`, form, {
@@ -141,17 +141,17 @@ export async function adminUploadProjectThumbnail(id: number, file: File) {
   return data;
 }
 
-export async function adminListExperience() {
+export async function ownerListExperience() {
   const { data } = await apiV1.get<Experience[]>("/experience");
   return data;
 }
 
-export async function adminCreateExperience(payload: Omit<Experience, "id">) {
+export async function ownerCreateExperience(payload: Omit<Experience, "id">) {
   const { data } = await apiV1.post<Experience>("/admin/experience", payload);
   return data;
 }
 
-export async function adminUpdateExperience(
+export async function ownerUpdateExperience(
   id: number,
   payload: Omit<Experience, "id">,
 ) {
@@ -159,21 +159,21 @@ export async function adminUpdateExperience(
   return data;
 }
 
-export async function adminDeleteExperience(id: number) {
+export async function ownerDeleteExperience(id: number) {
   await apiV1.delete(`/admin/experience/${id}`);
 }
 
-export async function adminListEducation() {
+export async function ownerListEducation() {
   const { data } = await apiV1.get<Education[]>("/education");
   return data;
 }
 
-export async function adminCreateEducation(payload: Omit<Education, "id">) {
+export async function ownerCreateEducation(payload: Omit<Education, "id">) {
   const { data } = await apiV1.post<Education>("/admin/education", payload);
   return data;
 }
 
-export async function adminUpdateEducation(
+export async function ownerUpdateEducation(
   id: number,
   payload: Omit<Education, "id">,
 ) {
@@ -181,7 +181,7 @@ export async function adminUpdateEducation(
   return data;
 }
 
-export async function adminDeleteEducation(id: number) {
+export async function ownerDeleteEducation(id: number) {
   await apiV1.delete(`/admin/education/${id}`);
 }
 
@@ -194,26 +194,26 @@ export type CertificateInput = {
   display_order: number;
 };
 
-export async function adminListCertificates() {
+export async function ownerListCertificates() {
   const { data } = await apiV1.get<Certificate[]>("/certificates");
   return data;
 }
 
-export async function adminCreateCertificate(payload: CertificateInput) {
+export async function ownerCreateCertificate(payload: CertificateInput) {
   const { data } = await apiV1.post<Certificate>("/admin/certificates", payload);
   return data;
 }
 
-export async function adminUpdateCertificate(id: number, payload: CertificateInput) {
+export async function ownerUpdateCertificate(id: number, payload: CertificateInput) {
   const { data } = await apiV1.put<Certificate>(`/admin/certificates/${id}`, payload);
   return data;
 }
 
-export async function adminDeleteCertificate(id: number) {
+export async function ownerDeleteCertificate(id: number) {
   await apiV1.delete(`/admin/certificates/${id}`);
 }
 
-export async function adminUploadCertificateImage(id: number, file: File) {
+export async function ownerUploadCertificateImage(id: number, file: File) {
   const form = new FormData();
   form.append("file", file);
   const { data } = await apiV1.post<Certificate>(
@@ -224,7 +224,7 @@ export async function adminUploadCertificateImage(id: number, file: File) {
   return data;
 }
 
-export async function adminUploadCertificatePdf(id: number, file: File) {
+export async function ownerUploadCertificatePdf(id: number, file: File) {
   const form = new FormData();
   form.append("file", file);
   const { data } = await apiV1.post<Certificate>(
@@ -235,7 +235,7 @@ export async function adminUploadCertificatePdf(id: number, file: File) {
   return data;
 }
 
-export async function adminGetResume() {
+export async function ownerGetResume() {
   try {
     const { data } = await apiV1.get<Resume>("/resume");
     return data;
@@ -244,7 +244,7 @@ export async function adminGetResume() {
   }
 }
 
-export async function adminUploadResume(file: File) {
+export async function ownerUploadResume(file: File) {
   const form = new FormData();
   form.append("file", file);
   const { data } = await apiV1.post<Resume>("/admin/resume", form, {
@@ -253,32 +253,32 @@ export async function adminUploadResume(file: File) {
   return data;
 }
 
-export async function adminDeleteResume() {
+export async function ownerDeleteResume() {
   await apiV1.delete("/admin/resume");
 }
 
-export async function adminListMessages() {
+export async function ownerListMessages() {
   const { data } = await apiV1.get<ContactMessage[]>("/admin/contact-messages");
   return data;
 }
 
-export async function adminMarkMessageRead(id: number) {
+export async function ownerMarkMessageRead(id: number) {
   const { data } = await apiV1.patch<ContactMessage>(
     `/admin/contact-messages/${id}/read`,
   );
   return data;
 }
 
-export async function adminDeleteMessage(id: number) {
+export async function ownerDeleteMessage(id: number) {
   await apiV1.delete(`/admin/contact-messages/${id}`);
 }
 
-export async function adminListSettings() {
+export async function ownerListSettings() {
   const { data } = await apiV1.get<WebsiteSetting[]>("/admin/settings");
   return data;
 }
 
-export async function adminUpsertSetting(key: string, value: string) {
+export async function ownerUpsertSetting(key: string, value: string) {
   const { data } = await apiV1.put<WebsiteSetting>("/admin/settings", { key, value });
   return data;
 }

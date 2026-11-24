@@ -2,53 +2,193 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------
+   Design tokens — RGB channels so Tailwind opacity modifiers work.
+   The site is light-only: a single palette defined on :root.
+------------------------------------------------------------------- */
 @layer base {
+  /* Ivory + coral + soft pink */
   :root {
-    --color-bg: #f4f5f8;
-    --color-surface: #ffffff;
-    --color-foreground: #0b0d12;
-    --color-muted: #52525b;
-    --color-accent: #6d5ef8;
-    --color-border: rgba(11, 13, 18, 0.08);
-  }
-
-  .dark {
-    --color-bg: #0b0d12;
-    --color-surface: #151923;
-    --color-foreground: #ffffff;
-    --color-muted: #a1a1aa;
-    --color-accent: #8b7cff;
-    --color-border: rgba(255, 255, 255, 0.08);
+    color-scheme: light; /* native controls, scrollbars and autofill stay light */
+    --c-bg: 255 250 247; /* #FFFAF7 main background */
+    --c-bg-secondary: 255 240 233; /* #FFF0E9 secondary background */
+    --c-card: 255 255 255;
+    --c-accent: 240 90 79; /* #F05A4F coral red */
+    --c-accent-strong: 214 66 54; /* darker coral for small text (AA on ivory) */
+    --c-accent-2: 255 182 185; /* #FFB6B9 soft pink */
+    --c-btn: 233 86 69; /* #E95645 primary button */
+    --c-on-accent: 255 255 255;
+    --c-text: 43 27 24; /* #2B1B18 headings */
+    --c-muted: 117 100 95; /* #75645F body */
+    --c-border: 43 27 24;
+    --c-peach: 255 197 181; /* #FFC5B5 decorative circle */
+    --border-alpha: 0.09;
+    --glass-bg: rgb(255 255 255 / 0.82);
+    --card-shadow: 0 1px 2px rgb(43 27 24 / 0.04), 0 8px 24px rgb(43 27 24 / 0.05);
   }
 
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply min-h-screen antialiased;
-    background-color: var(--color-bg);
-    color: var(--color-foreground);
+    @apply min-h-screen bg-background font-sans text-foreground antialiased;
+    line-height: 1.65;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    letter-spacing: -0.02em;
   }
 
   ::selection {
-    background-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+    background-color: rgb(var(--c-accent) / 0.35);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-accent));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition-duration: 0.001ms !important;
+    }
   }
 }
 
 @layer components {
-  .bento-card {
-    @apply rounded-2xl border p-6 transition-shadow duration-300;
-    background-color: var(--color-surface);
-    border-color: var(--color-border);
+  /* ---------- Ambient page background ---------- */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  /* One quiet wash of the secondary background at the top of the page */
+  .ambient-wash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      70rem 34rem at 50% -6%,
+      rgb(var(--c-bg-secondary)),
+      transparent 70%
+    );
   }
 
+  /* ---------- Decorative helpers ---------- */
+  /* Retained as a class name used by cards; the border simply tints on hover */
+  .g-border:hover {
+    border-color: rgb(var(--c-accent) / 0.4);
+  }
+
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgb(var(--c-text) / 0.45);
+  }
+
+  .glass-panel {
+    border: 1px solid rgb(var(--c-border) / var(--border-alpha));
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgb(43 27 24 / 0.06);
+  }
+  .hover-underline {
+    background-image: linear-gradient(rgb(var(--c-accent)), rgb(var(--c-accent)));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 2px;
+    transition: background-size 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .group:hover .hover-underline,
+  .hover-underline:hover {
+    background-size: 100% 2px;
+  }
+
+  /* Project extras: revealed on hover/focus for pointer devices, always visible on touch */
+  @media (hover: hover) and (pointer: fine) {
+    .project-extra {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition:
+        max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.35s ease;
+    }
+    .group:hover .project-extra,
+    .group:focus-within .project-extra {
+      max-height: 14rem;
+      opacity: 1;
+    }
+  }
+
+  /* Clean card: white surface, hairline border, soft shadow */
+  .bento-card {
+    @apply relative rounded-3xl border border-border bg-surface p-6 md:p-7;
+    box-shadow: var(--card-shadow);
+    transition:
+      transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
   .bento-card:hover {
-    @apply shadow-lg;
-    box-shadow: 0 16px 40px color-mix(in srgb, var(--color-accent) 12%, transparent);
+    border-color: rgb(var(--c-accent) / 0.35);
+  }
+  .bento-card.is-static:hover {
+    border-color: rgb(var(--c-border) / var(--border-alpha));
+  }
+
+  .label {
+    @apply text-[11px] font-semibold uppercase tracking-label text-accent-strong;
+  }
+
+  /* Highlighted words are a flat coral — no gradient */
+  .gradient-text {
+    color: rgb(var(--c-accent));
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-btn px-6 py-3 text-sm font-semibold text-on-accent transition;
+    box-shadow: 0 6px 16px -8px rgb(var(--c-btn) / 0.55);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -8px rgb(var(--c-btn) / 0.6);
+    filter: brightness(0.96);
+  }
+  .btn-primary:disabled {
+    @apply opacity-60;
+    transform: none;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium text-foreground transition;
+    background: rgb(var(--c-card));
+  }
+  .btn-ghost:hover {
+    border-color: rgb(var(--c-accent) / 0.5);
+    background: rgb(var(--c-bg-secondary));
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-border bg-secondary px-3 py-1 text-xs text-muted;
   }
 
   .section-anchor {
-    scroll-margin-top: 5.5rem;
+    scroll-margin-top: 6rem;
   }
 }

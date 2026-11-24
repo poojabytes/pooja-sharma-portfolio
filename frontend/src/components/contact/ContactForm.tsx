@@ -1,4 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence, motion } from "framer-motion";
+import { CheckCircle2, Loader2, Send } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -24,9 +26,7 @@ export default function ContactForm() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>({
-    resolver: zodResolver(schema),
-  });
+  } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
   const onSubmit = async (values: FormValues) => {
     setSubmitError(null);
@@ -42,60 +42,91 @@ export default function ContactForm() {
     }
   };
 
-  if (submitted) {
-    return (
-      <div className="bento-card text-sm text-muted" role="status">
-        Thank you — your message was sent successfully.
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="bento-card space-y-4" noValidate>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Name" error={errors.name?.message}>
-          <input
-            {...register("name")}
-            className={inputClass(errors.name)}
-            autoComplete="name"
-          />
-        </Field>
-        <Field label="Email" error={errors.email?.message}>
-          <input
-            {...register("email")}
-            type="email"
-            className={inputClass(errors.email)}
-            autoComplete="email"
-          />
-        </Field>
-      </div>
-      <Field label="Subject" error={errors.subject?.message}>
-        <input {...register("subject")} className={inputClass(errors.subject)} />
-      </Field>
-      <Field label="Message" error={errors.message?.message}>
-        <textarea
-          {...register("message")}
-          rows={5}
-          className={inputClass(errors.message)}
-        />
-      </Field>
-      {submitError ? <p className="text-sm text-red-400">{submitError}</p> : null}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="rounded-xl bg-accent px-5 py-2.5 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-60"
-      >
-        {isSubmitting ? "Sending..." : "Send message"}
-      </button>
-    </form>
+    <AnimatePresence mode="wait" initial={false}>
+      {submitted ? (
+        <motion.div
+          key="done"
+          role="status"
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          className="glass-panel flex flex-col items-center gap-4 rounded-3xl p-10 text-center"
+        >
+          <motion.span
+            initial={{ scale: 0, rotate: -40 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: "spring", stiffness: 220, damping: 12, delay: 0.1 }}
+            className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-400/15 text-emerald-400"
+          >
+            <CheckCircle2 className="h-8 w-8" />
+          </motion.span>
+          <p className="font-display text-xl font-bold">Thank you — message received.</p>
+          <p className="text-sm text-muted">I&apos;ll get back to you as soon as I can.</p>
+          <button type="button" onClick={() => setSubmitted(false)} className="btn-ghost mt-2">
+            Send another
+          </button>
+        </motion.div>
+      ) : (
+        <motion.form
+          key="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="glass-panel space-y-4 rounded-3xl p-6 md:p-8"
+        >
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Name" error={errors.name?.message}>
+              <input {...register("name")} className={inputClass(errors.name)} autoComplete="name" />
+            </Field>
+            <Field label="Email" error={errors.email?.message}>
+              <input
+                {...register("email")}
+                type="email"
+                className={inputClass(errors.email)}
+                autoComplete="email"
+              />
+            </Field>
+          </div>
+          <Field label="Subject" error={errors.subject?.message}>
+            <input {...register("subject")} className={inputClass(errors.subject)} />
+          </Field>
+          <Field label="Message" error={errors.message?.message}>
+            <textarea {...register("message")} rows={5} className={inputClass(errors.message)} />
+          </Field>
+          {submitError ? (
+            <p role="alert" className="text-sm text-red-400">
+              {submitError}
+            </p>
+          ) : null}
+          <button type="submit" disabled={isSubmitting} className="btn-primary group w-full sm:w-auto">
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Sending...
+              </>
+            ) : (
+              <>
+                Send message
+                <Send
+                  className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-1"
+                  aria-hidden
+                />
+              </>
+            )}
+          </button>
+        </motion.form>
+      )}
+    </AnimatePresence>
   );
 }
 
 function inputClass(hasError: unknown) {
   return [
-    "w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none transition",
-    "border-border focus:border-accent/60 focus:ring-2 focus:ring-accent/20",
-    hasError ? "border-red-400/60" : "",
+    "w-full rounded-xl border bg-background/60 px-4 py-3 text-sm outline-none transition",
+    "focus:border-accent/70 focus:bg-background focus:shadow-[0_0_0_4px_rgb(var(--c-accent)/0.15)]",
+    hasError ? "border-red-400/60" : "border-border",
   ].join(" ");
 }
 
@@ -110,9 +141,22 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-medium text-muted">{label}</span>
+      <span className="mb-1.5 block text-xs font-medium uppercase tracking-label text-muted">
+        {label}
+      </span>
       {children}
-      {error ? <span className="mt-1 block text-xs text-red-400">{error}</span> : null}
+      <AnimatePresence>
+        {error ? (
+          <motion.span
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="mt-1 block text-xs text-red-400"
+          >
+            {error}
+          </motion.span>
+        ) : null}
+      </AnimatePresence>
     </label>
   );
 }

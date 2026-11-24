@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
+import { MotionConfig } from "framer-motion";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider } from "@/context/ThemeContext";
 import { ToastProvider } from "@/context/ToastContext";
 import App from "./App";
 import "./styles/index.css";
@@ -9,11 +9,11 @@ import "./styles/index.css";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <ThemeProvider>
+      <MotionConfig reducedMotion="user">
         <ToastProvider>
           <App />
         </ToastProvider>
-      </ThemeProvider>
+      </MotionConfig>
     </BrowserRouter>
   </StrictMode>,
 );

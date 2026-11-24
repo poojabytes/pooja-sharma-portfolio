@@ -1,6 +1,11 @@
 import { Download, FileText } from "lucide-react";
+import Section from "@/components/common/Section";
 import SectionHeading from "@/components/common/SectionHeading";
+import Magnetic from "@/components/effects/Magnetic";
+import TiltCard from "@/components/effects/TiltCard";
+import ResumeEditor from "@/components/owner/editors/ResumeEditor";
 import { formatDateTime } from "@/utils/format";
+import { mediaUrl } from "@/utils/mediaUrl";
 import type { Resume } from "@/types/portfolio";
 
 type Props = {
@@ -9,46 +14,47 @@ type Props = {
 
 export default function ResumeSection({ resume }: Props) {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-12 md:px-6">
-      <SectionHeading id="resume" eyebrow="Resume" title="Download CV" />
-      <ResumeCard resume={resume} />
-    </section>
-  );
-}
-
-function ResumeCard({ resume }: { resume: Resume | null }) {
-  if (!resume) {
-    return (
-      <div className="bento-card flex items-center gap-4 text-sm text-muted">
-        <FileText className="h-8 w-8 shrink-0 text-accent" aria-hidden />
-        <p>Upload a PDF resume in the admin dashboard to enable download here.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="bento-card flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex items-start gap-4">
-        <div className="rounded-xl bg-accent/15 p-3 text-accent">
-          <FileText className="h-6 w-6" aria-hidden />
+    <Section id="resume" tone="violet" side="left" className="!py-16 md:!py-20">
+      <SectionHeading eyebrow="Resume" title="Download CV." highlight={["CV"]} />
+      {resume ? (
+        <TiltCard max={3} className="bento-card g-border">
+          <div className="relative z-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="rounded-2xl bg-accent/15 p-4 text-accent">
+                <FileText className="h-7 w-7" aria-hidden />
+              </div>
+              <div>
+                <p className="font-display text-lg font-bold">{resume.file_name}</p>
+                <p className="mt-1 text-xs text-muted">
+                  Last updated {formatDateTime(resume.updated_at)}
+                </p>
+              </div>
+            </div>
+            <Magnetic>
+              <a
+                href={mediaUrl(resume.file_url)}
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                className="btn-primary group"
+              >
+                <Download
+                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"
+                  aria-hidden
+                />
+                Download PDF
+              </a>
+            </Magnetic>
+          </div>
+        </TiltCard>
+      ) : (
+        <div className="bento-card flex items-center gap-4 text-sm text-muted">
+          <FileText className="h-8 w-8 shrink-0 text-accent" aria-hidden />
+          <p>A resume download will appear here once a PDF is uploaded.</p>
         </div>
-        <div>
-          <p className="font-medium">{resume.file_name}</p>
-          <p className="mt-1 text-xs text-muted">
-            Last updated {formatDateTime(resume.updated_at)}
-          </p>
-        </div>
-      </div>
-      <a
-        href={resume.file_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        download
-        className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-medium text-white transition hover:opacity-90"
-      >
-        <Download className="h-4 w-4" aria-hidden />
-        Download PDF
-      </a>
-    </div>
+      )}
+
+      <ResumeEditor resume={resume} />
+    </Section>
   );
 }

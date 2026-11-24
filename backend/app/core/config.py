@@ -26,6 +26,7 @@ class Settings(BaseSettings):
     admin_initial_password: str | None = Field(default=None, alias="ADMIN_INITIAL_PASSWORD")
 
     frontend_url: str = Field(default="http://localhost:5173", alias="FRONTEND_URL")
+    api_public_url: str = Field(default="http://localhost:8000", alias="API_PUBLIC_URL")
 
     cloudinary_cloud_name: str | None = Field(default=None, alias="CLOUDINARY_CLOUD_NAME")
     cloudinary_api_key: str | None = Field(default=None, alias="CLOUDINARY_API_KEY")

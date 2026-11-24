@@ -41,7 +41,7 @@ def init_admin() -> None:
         ProfileRepository(session).upsert_singleton(
             name="Pooja Sharma",
             designation="Python Backend Developer | FastAPI | Full Stack Developer",
-            biography="Professional introduction — edit this in the admin dashboard.",
+            biography="Professional introduction — sign in as owner on the portfolio to edit.",
         )
 
         edu_repo = OrderedRepository(session, Education)

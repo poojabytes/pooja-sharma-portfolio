@@ -1,67 +1,79 @@
-import { Github, Linkedin, Mail } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowUp, Mail } from "lucide-react";
+import Magnetic from "@/components/effects/Magnetic";
+import { requestOwnerLogin } from "@/components/owner/OwnerToolbar";
 import { SITE } from "@/constants/site";
+import { useAuth } from "@/context/AuthContext";
+import { socialIcon, sortedSocials } from "@/utils/social";
 import type { SocialLink } from "@/types/portfolio";
-
-const iconFor = (platform: string) => {
-  const p = platform.toLowerCase();
-  if (p.includes("github")) return Github;
-  if (p.includes("linkedin")) return Linkedin;
-  if (p.includes("mail") || p.includes("email")) return Mail;
-  return Mail;
-};
 
 type Props = {
   socialLinks: SocialLink[];
   email?: string | null;
 };
 
+const iconBtn =
+  "flex h-11 w-11 items-center justify-center rounded-xl border border-border text-muted transition hover:-translate-y-0.5 hover:border-accent/60 hover:bg-accent/10 hover:text-foreground";
+
 export default function Footer({ socialLinks, email }: Props) {
   const year = new Date().getFullYear();
+  const { isOwner } = useAuth();
 
   return (
-    <footer className="border-t border-border bg-surface/50">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 md:flex-row md:items-center md:justify-between md:px-6">
+    <footer className="relative mt-10 border-t border-border">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 md:flex-row md:items-end md:justify-between md:px-6">
         <div>
-          <p className="font-semibold">{SITE.name}</p>
-          <p className="mt-1 text-sm text-muted">{SITE.headline}</p>
-          <p className="mt-4 text-xs text-muted">
-            © {year} {SITE.name}. All rights reserved.
+          <p className="font-display text-lg font-bold">{SITE.name}</p>
+          <p className="mt-1 max-w-sm text-sm text-muted">
+            Full-Stack Developer (MERN) · AI/ML Enthusiast
+          </p>
+          <p className="mt-6 text-xs text-muted">
+            © {year} {SITE.name}. Built with React &amp; FastAPI.
+            {!isOwner ? (
+              <button
+                type="button"
+                onClick={requestOwnerLogin}
+                className="ml-3 text-muted/50 transition hover:text-muted"
+              >
+                Owner
+              </button>
+            ) : null}
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          {socialLinks.map((link) => {
-            const Icon = iconFor(link.platform);
+          {sortedSocials(socialLinks).map((link) => {
+            const Icon = socialIcon(link.platform);
             return (
               <a
                 key={link.id}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm text-muted transition hover:border-accent/40 hover:text-foreground"
+                className={iconBtn}
                 aria-label={link.label}
               >
                 <Icon className="h-4 w-4" />
-                <span>{link.label}</span>
               </a>
             );
           })}
           {email ? (
-            <a
-              href={`mailto:${email}`}
-              className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm text-muted transition hover:border-accent/40 hover:text-foreground"
-            >
+            <a href={`mailto:${email}`} className={iconBtn} aria-label="Send email">
               <Mail className="h-4 w-4" />
-              Email
             </a>
           ) : null}
-          <Link
-            to="/admin/login"
-            className="text-xs text-muted/70 transition hover:text-muted"
-          >
-            Admin
-          </Link>
+          <Magnetic>
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="btn-ghost group ml-2 !px-4"
+            >
+              Back to top
+              <ArrowUp
+                className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-1"
+                aria-hidden
+              />
+            </button>
+          </Magnetic>
         </div>
       </div>
     </footer>

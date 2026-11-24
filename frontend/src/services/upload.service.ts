@@ -1,2 +1,2 @@
-/** File uploads are implemented in admin.service.ts (profile, resume, projects, certificates). */
+/** File uploads are implemented in owner.service.ts (profile, resume, projects, certificates). */
 export {};

@@ -1,87 +1,193 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Menu, Moon, Sun, X } from "lucide-react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import HashLink from "@/components/common/HashLink";
+import Magnetic from "@/components/effects/Magnetic";
 import { SITE } from "@/constants/site";
-import { useTheme } from "@/context/ThemeContext";
+import { usePortfolio } from "@/context/PortfolioContext";
+import { useScrollSpy } from "@/hooks/useScrollSpy";
+import { mediaUrl } from "@/utils/mediaUrl";
 
-const navItems = [
-  { to: "/#about", label: "About", end: false },
-  { to: "/projects", label: "Projects", end: true },
-  { to: "/experience", label: "Experience", end: true },
-  { to: "/contact", label: "Contact", end: true },
-];
+const items = [
+  { id: "about", label: "About" },
+  { id: "skills", label: "Skills" },
+  { id: "projects", label: "Work" },
+  { id: "experience", label: "Experience" },
+  { id: "contact", label: "Contact" },
+] as const;
+
+const ids = items.map((i) => i.id);
+
+const ROUTE_TO_ID: Record<string, string> = {
+  "/about": "about",
+  "/projects": "projects",
+  "/experience": "experience",
+  "/contact": "contact",
+};
 
 export default function Navbar() {
-  const { theme, toggleTheme } = useTheme();
+  const { data, loading } = usePortfolio();
+  const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 32));
+
+  const spied = useScrollSpy(ids, pathname === "/" && !loading);
+  const activeId = pathname === "/" ? spied : (ROUTE_TO_ID[pathname] ?? null);
+  const resume = data.resume;
+
+  useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 px-3 pt-3 md:px-6">
       <nav
-        className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6"
         aria-label="Main"
+        className={[
+          "glass-panel mx-auto flex items-center justify-between rounded-full px-3",
+          "transition-[max-width,padding] duration-500 ease-out",
+          scrolled ? "max-w-4xl py-1.5" : "max-w-6xl py-2.5",
+        ].join(" ")}
       >
-        <Link to="/" className="text-sm font-semibold tracking-tight">
-          {SITE.name.split(" ")[0]}
-          <span className="text-accent">.</span>
+        <Link to="/" className="flex items-center gap-2.5 pl-1 font-display text-sm font-bold" aria-label={`${SITE.name} home`}>
+          <motion.span
+            whileHover={{ rotate: 8, scale: 1.08 }}
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-xs font-extrabold text-on-accent"
+            aria-hidden
+          >
+            PS
+          </motion.span>
+          <span className="hidden sm:inline">{SITE.name}</span>
         </Link>
 
-        <ul className="hidden items-center gap-1 md:flex">
-          {navItems.map((item) => (
-            <li key={item.label}>
-              <NavLink
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) =>
-                  [
-                    "rounded-lg px-3 py-2 text-sm text-muted transition hover:text-foreground",
-                    isActive ? "bg-surface text-foreground" : "",
-                  ].join(" ")
-                }
-              >
-                {item.label}
-              </NavLink>
-            </li>
-          ))}
+        <ul className="hidden items-center gap-0.5 md:flex">
+          {items.map((item) => {
+            const active = activeId === item.id;
+            return (
+              <li key={item.id}>
+                <HashLink
+                  id={item.id}
+                  className={`group relative block rounded-full px-4 py-2 text-sm transition-colors ${
+                    active ? "text-foreground" : "text-muted hover:text-foreground"
+                  }`}
+                  aria-current={active ? "location" : undefined}
+                >
+                  {active ? (
+                    <motion.span
+                      layoutId="nav-pill"
+                      className="absolute inset-0 rounded-full bg-accent/10"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    />
+                  ) : null}
+                  <span className="relative">
+                    {item.label}
+                    <span
+                      aria-hidden
+                      className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-300 group-hover:scale-x-100"
+                    />
+                  </span>
+                </HashLink>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="flex items-center gap-2">
+          {resume ? (
+            <div className="hidden md:block">
+              <Magnetic strength={0.4}>
+                <a
+                  href={mediaUrl(resume.file_url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary group !px-4 !py-2 text-xs"
+                >
+                  Resume
+                  <ArrowUpRight
+                    className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    aria-hidden
+                  />
+                </a>
+              </Magnetic>
+            </div>
+          ) : null}
+
           <button
             type="button"
-            onClick={toggleTheme}
-            className="rounded-lg border border-border p-2 text-muted transition hover:text-foreground"
-            aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-          >
-            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </button>
-          <button
-            type="button"
-            className="rounded-lg border border-border p-2 md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border md:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={open ? "x" : "m"}
+                initial={{ rotate: -80, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 80, opacity: 0 }}
+                transition={{ duration: 0.18 }}
+                className="flex"
+              >
+                {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              </motion.span>
+            </AnimatePresence>
           </button>
         </div>
       </nav>
 
-      {open ? (
-        <div className="border-t border-border px-4 py-3 md:hidden">
-          <ul className="flex flex-col gap-1">
-            {navItems.map((item) => (
-              <li key={item.label}>
-                <Link
-                  to={item.to}
-                  className="block rounded-lg px-3 py-2 text-sm text-muted hover:bg-surface hover:text-foreground"
-                  onClick={() => setOpen(false)}
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            id="mobile-menu"
+            initial={{ opacity: 0, y: -12, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -12, scale: 0.98 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="glass-panel mx-auto mt-2 max-w-6xl rounded-2xl p-2 md:hidden"
+          >
+            <ul className="flex flex-col">
+              {items.map((item, i) => (
+                <motion.li
+                  key={item.id}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 * i + 0.08 }}
                 >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+                  <HashLink
+                    id={item.id}
+                    onClick={() => setOpen(false)}
+                    className={`flex items-center justify-between rounded-xl px-4 py-3.5 font-display text-lg font-semibold ${
+                      activeId === item.id ? "bg-accent/15 text-foreground" : "text-muted"
+                    }`}
+                  >
+                    {item.label}
+                    <ArrowUpRight className="h-4 w-4 text-accent" aria-hidden />
+                  </HashLink>
+                </motion.li>
+              ))}
+              {resume ? (
+                <motion.li
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 * items.length + 0.08 }}
+                  className="p-2"
+                >
+                  <a
+                    href={mediaUrl(resume.file_url)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary w-full"
+                  >
+                    Resume <ArrowUpRight className="h-4 w-4" aria-hidden />
+                  </a>
+                </motion.li>
+              ) : null}
+            </ul>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </header>
   );
 }

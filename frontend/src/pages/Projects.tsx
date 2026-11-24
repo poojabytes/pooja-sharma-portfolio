@@ -1,7 +1,8 @@
 import Seo from "@/components/common/Seo";
 import LoadingState from "@/components/common/LoadingState";
+import Section from "@/components/common/Section";
 import SectionHeading from "@/components/common/SectionHeading";
-import ProjectCard from "@/components/projects/ProjectCard";
+import ProjectsShowcase from "@/components/projects/ProjectsShowcase";
 import { usePortfolio } from "@/context/PortfolioContext";
 
 export default function Projects() {
@@ -10,21 +11,19 @@ export default function Projects() {
   if (loading) return <LoadingState />;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 md:px-6">
+    <Section tone="violet" side="right" className="!pt-12">
       <Seo title="Projects | Pooja Sharma" />
       <SectionHeading
-        title="All projects"
-        description="GitHub links, demos, and tech stack from the API."
+        eyebrow="Projects"
+        title="All work."
+        highlight={["work"]}
+        description="Filter by technology to explore the projects."
       />
       {data.projects.length === 0 ? (
         <p className="bento-card text-sm text-muted">No projects published yet.</p>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {data.projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
+        <ProjectsShowcase projects={data.projects} filterable />
       )}
-    </div>
+    </Section>
   );
 }

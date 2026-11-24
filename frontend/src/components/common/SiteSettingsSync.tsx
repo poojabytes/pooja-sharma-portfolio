@@ -1,14 +1,10 @@
 import { useEffect } from "react";
 import { usePortfolio } from "@/context/PortfolioContext";
-import { useTheme } from "@/context/ThemeContext";
 import { SITE } from "@/constants/site";
 
-const THEME_KEY = "portfolio-theme";
-
-/** Applies admin `site_title` / `default_theme` when the visitor has no saved preference. */
+/** Applies the public `site_title` setting to the document title and meta description. */
 export default function SiteSettingsSync() {
   const { data } = usePortfolio();
-  const { setTheme } = useTheme();
 
   useEffect(() => {
     const title = data.publicSettings.site_title;
@@ -16,16 +12,6 @@ export default function SiteSettingsSync() {
       document.title = title;
     }
   }, [data.publicSettings.site_title]);
-
-  useEffect(() => {
-    const defaultTheme = data.publicSettings.default_theme;
-    if (defaultTheme !== "light" && defaultTheme !== "dark") return;
-    if (typeof window === "undefined") return;
-    if (!localStorage.getItem(THEME_KEY)) {
-      setTheme(defaultTheme);
-    }
-    localStorage.setItem("portfolio-default-theme", defaultTheme);
-  }, [data.publicSettings.default_theme, setTheme]);
 
   useEffect(() => {
     if (!data.publicSettings.site_title) return;

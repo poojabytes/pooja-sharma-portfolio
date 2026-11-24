@@ -3,11 +3,13 @@ import logging
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.api.v1.router import api_router
 from app.core.config import get_settings
 from app.core.exceptions import AppError
 from app.db.database import check_database_connection
+from app.services.cloudinary_service import UPLOADS_ROOT
 
 settings = get_settings()
 
@@ -20,6 +22,9 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
 )
+
+UPLOADS_ROOT.mkdir(parents=True, exist_ok=True)
+app.mount("/media", StaticFiles(directory=str(UPLOADS_ROOT)), name="media")
 
 app.add_middleware(
     CORSMiddleware,

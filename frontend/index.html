@@ -1,7 +1,15 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="color-scheme" content="light" />
+    <script>
+      // One-time cleanup of keys left behind by the removed theme toggle.
+      try {
+        localStorage.removeItem("portfolio-theme");
+        localStorage.removeItem("portfolio-default-theme");
+      } catch (e) {}
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -14,10 +22,11 @@
       content="Python Backend Developer specializing in FastAPI and modern full stack development."
     />
     <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#FFFAF7" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <title>Pooja Sharma | Developer Portfolio</title>

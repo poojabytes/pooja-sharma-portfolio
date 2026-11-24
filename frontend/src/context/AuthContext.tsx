@@ -14,13 +14,15 @@ import {
 } from "@/services/auth.service";
 import { getApiErrorMessage } from "@/utils/apiError";
 
-export type AdminUser = {
+export type OwnerUser = {
   id: number;
   email: string;
 };
 
 type AuthContextValue = {
-  admin: AdminUser | null;
+  owner: OwnerUser | null;
+  /** True when the portfolio owner is authenticated. */
+  isOwner: boolean;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -30,15 +32,15 @@ type AuthContextValue = {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [admin, setAdmin] = useState<AdminUser | null>(null);
+  const [owner, setOwner] = useState<OwnerUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
     try {
       const data = await getCurrentAdmin();
-      setAdmin(data);
+      setOwner(data);
     } catch {
-      setAdmin(null);
+      setOwner(null);
     }
   }, []);
 
@@ -51,31 +53,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [refresh]);
 
   useEffect(() => {
-    const onUnauthorized = () => setAdmin(null);
+    const onUnauthorized = () => setOwner(null);
     window.addEventListener("portfolio:admin-unauthorized", onUnauthorized);
     return () => window.removeEventListener("portfolio:admin-unauthorized", onUnauthorized);
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
-    try {
-      await loginAdmin(email, password);
-      await refresh();
-    } catch (error) {
-      throw new Error(getApiErrorMessage(error, "Login failed"));
-    }
-  }, [refresh]);
+  const login = useCallback(
+    async (email: string, password: string) => {
+      try {
+        await loginAdmin(email, password);
+        await refresh();
+      } catch (error) {
+        throw new Error(getApiErrorMessage(error, "Login failed"));
+      }
+    },
+    [refresh],
+  );
 
   const logout = useCallback(async () => {
     try {
       await logoutAdmin();
     } finally {
-      setAdmin(null);
+      setOwner(null);
     }
   }, []);
 
   const value = useMemo(
-    () => ({ admin, loading, login, logout, refresh }),
-    [admin, loading, login, logout, refresh],
+    () => ({
+      owner,
+      isOwner: Boolean(owner),
+      loading,
+      login,
+      logout,
+      refresh,
+    }),
+    [owner, loading, login, logout, refresh],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
