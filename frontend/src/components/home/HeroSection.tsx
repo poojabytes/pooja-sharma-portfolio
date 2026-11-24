@@ -20,7 +20,7 @@ type Props = {
   projectCount: number;
 };
 
-/** Default portrait. Replaced by the owner-uploaded photo when one exists. */
+/** Default cutout portrait (transparent backdrop). Replaced when an owner upload exists. */
 const FALLBACK_PORTRAIT = "/images/pooja-portrait.webp";
 
 const BADGE_SLOTS = [
@@ -106,8 +106,8 @@ export default function HeroSection({
   const edu = education[0];
 
   const portrait = profile?.profile_image_url ?? FALLBACK_PORTRAIT;
-  // Studio / white-backdrop portraits melt into the peach disc with multiply.
-  const portraitBlend = "mix-blend-multiply";
+  // Uploaded photos with white backdrops melt into the peach disc; cutouts stay sharp.
+  const portraitBlend = profile?.profile_image_url ? "mix-blend-multiply" : "";
 
   const iconBtn =
     "flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted transition duration-300 hover:-translate-y-1 hover:border-accent/60 hover:bg-accent/10 hover:text-foreground";
@@ -230,12 +230,12 @@ export default function HeroSection({
           </h1>
         </div>
 
-        {/* Portrait stage */}
-        <div className="relative mx-auto mt-6 w-full max-w-5xl sm:mt-8">
-          <div className="relative mx-auto h-[20rem] w-full max-w-[20rem] overflow-hidden sm:h-[26rem] sm:max-w-[26rem] lg:h-[32rem] lg:max-w-5xl">
-            <div className="absolute inset-0 overflow-hidden">
+        {/* Portrait stage — cutout stands on the peach disc (no white box) */}
+        <div className="relative mx-auto mt-6 w-full max-w-5xl overflow-x-clip sm:mt-8">
+          <div className="relative mx-auto h-[22rem] w-full max-w-[22rem] sm:h-[28rem] sm:max-w-[28rem] lg:h-[34rem] lg:max-w-5xl">
+            <div className="absolute inset-0">
               {/* Peach disc */}
-              <div className="absolute bottom-0 left-1/2 w-[min(32rem,92%)] -translate-x-1/2 translate-y-[28%]">
+              <div className="absolute bottom-0 left-1/2 w-[min(34rem,94%)] -translate-x-1/2 translate-y-[36%]">
                 <motion.div
                   style={{ x: discX, y: discY }}
                   initial={{ scale: 0.7, opacity: 0 }}
@@ -247,24 +247,24 @@ export default function HeroSection({
               {/* Thin decorative outline around the disc */}
               <div
                 aria-hidden
-                className="absolute bottom-0 left-1/2 w-[min(36rem,100%)] -translate-x-1/2 translate-y-[30%]"
+                className="absolute bottom-0 left-1/2 w-[min(38rem,102%)] -translate-x-1/2 translate-y-[38%]"
               >
                 <div className="aspect-square w-full rounded-full border border-accent/25" />
               </div>
 
-              {/* Portrait clipped to circle — face-forward crop, no CTA overlay */}
-              <div className="absolute bottom-0 left-1/2 h-[92%] w-[min(36rem,100%)] -translate-x-1/2 overflow-hidden rounded-full">
+              {/* Transparent cutout portrait */}
+              <div className="absolute bottom-0 left-1/2 h-[96%] -translate-x-1/2">
                 <motion.img
                   src={portrait}
                   alt={`Portrait of ${fullName}`}
                   width={768}
-                  height={1024}
+                  height={964}
                   loading="eager"
                   style={{ x: photoX, y: photoY }}
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className={`h-full w-full select-none object-cover object-[center_15%] ${portraitBlend}`}
+                  className={`h-full w-auto max-w-none select-none object-contain object-bottom ${portraitBlend}`}
                   draggable={false}
                 />
               </div>
