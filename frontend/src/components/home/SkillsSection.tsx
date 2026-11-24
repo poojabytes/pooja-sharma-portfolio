@@ -12,7 +12,6 @@ import {
 import { useMemo, useState } from "react";
 import Section from "@/components/common/Section";
 import SectionHeading from "@/components/common/SectionHeading";
-import TiltCard from "@/components/effects/TiltCard";
 import SkillsEditor from "@/components/owner/editors/SkillsEditor";
 import type { Skill } from "@/types/portfolio";
 
@@ -59,7 +58,19 @@ export default function SkillsSection({ skills }: Props) {
     [skills],
   );
 
-  const visible = skills.filter((s) => active === "All" || s.category === active);
+  const grouped = useMemo(() => {
+    const source =
+      active === "All" ? categories : categories.filter((c) => c === active);
+    return source
+      .map((category) => ({
+        category,
+        items: skills
+          .filter((s) => s.category === category)
+          .sort((a, b) => a.display_order - b.display_order || a.name.localeCompare(b.name)),
+      }))
+      .filter((g) => g.items.length > 0);
+  }, [active, categories, skills]);
+
   const tabs = ["All", ...categories];
 
   return (
@@ -69,28 +80,11 @@ export default function SkillsSection({ skills }: Props) {
         index="02"
         title="My tech stack."
         highlight={["tech"]}
-        description="Languages, frameworks and tools I work with, grouped by area."
+        description="Skills organised by category — pick a filter or browse the full stack."
       />
 
       {skills.length === 0 ? (
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {CATEGORY_ORDER.map((c, i) => {
-            const Icon = iconFor(c);
-            return (
-              <li key={c}>
-                <TiltCard delay={i * 0.05} className="bento-card g-border flex items-center gap-4">
-                  <span className="relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 text-accent">
-                    <Icon className="h-6 w-6" />
-                  </span>
-                  <div className="relative z-10">
-                    <p className="font-display font-bold">{c}</p>
-                    <p className="text-xs text-muted">Skills appear once you add them.</p>
-                  </div>
-                </TiltCard>
-              </li>
-            );
-          })}
-        </ul>
+        <p className="bento-card text-sm text-muted">Skills appear once you add them.</p>
       ) : (
         <>
           <div role="tablist" aria-label="Skill categories" className="mb-8 flex flex-wrap gap-2">
@@ -122,43 +116,49 @@ export default function SkillsSection({ skills }: Props) {
             })}
           </div>
 
-          <motion.ul layout className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="space-y-6">
             <AnimatePresence mode="popLayout">
-              {visible.map((skill, i) => {
-                const Icon = iconFor(skill.category);
+              {grouped.map((group, gi) => {
+                const Icon = iconFor(group.category);
                 return (
-                  <motion.li
-                    key={skill.id}
+                  <motion.section
+                    key={group.category}
                     layout
-                    initial={{ opacity: 0, scale: 0.9, y: 16 }}
-                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
                     viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.4, delay: Math.min(i, 12) * 0.03 }}
+                    transition={{ duration: 0.4, delay: Math.min(gi, 6) * 0.04 }}
+                    className="bento-card !p-5 sm:!p-6"
                   >
-                    <TiltCard
-                      reveal={false}
-                      max={10}
-                      className="bento-card g-border flex h-full flex-col items-start gap-4 !p-5"
-                    >
-                      <span
-                        className="relative z-10 flex h-12 w-12 animate-float items-center justify-center rounded-2xl border border-border bg-accent/10 text-accent"
-                        style={{ animationDelay: `${(i % 6) * 0.4}s` }}
-                      >
-                        <Icon className="h-6 w-6" />
+                    <header className="mb-4 flex items-center gap-3">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-border bg-accent/10 text-accent">
+                        <Icon className="h-5 w-5" aria-hidden />
                       </span>
-                      <div className="relative z-10">
-                        <p className="font-display text-base font-bold leading-tight">{skill.name}</p>
-                        <p className="mt-1 text-[11px] uppercase tracking-label text-muted">
-                          {skill.category}
+                      <div>
+                        <h3 className="font-display text-lg font-bold leading-tight">
+                          {group.category}
+                        </h3>
+                        <p className="text-xs text-muted">
+                          {group.items.length} skill{group.items.length === 1 ? "" : "s"}
                         </p>
                       </div>
-                    </TiltCard>
-                  </motion.li>
+                    </header>
+
+                    <ul className="flex flex-wrap gap-2.5">
+                      {group.items.map((skill) => (
+                        <li key={skill.id}>
+                          <span className="inline-flex items-center rounded-full border border-border bg-secondary/80 px-3.5 py-1.5 text-sm font-medium text-foreground transition hover:border-accent/40 hover:bg-accent/10">
+                            {skill.name}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.section>
                 );
               })}
             </AnimatePresence>
-          </motion.ul>
+          </div>
         </>
       )}
 
