@@ -47,7 +47,7 @@ export default function Navbar() {
         className={[
           "glass-panel mx-auto flex items-center justify-between rounded-full px-3",
           "transition-[max-width,padding] duration-500 ease-out",
-          scrolled ? "max-w-4xl py-1.5" : "max-w-6xl py-2.5",
+          scrolled ? "max-w-[min(100%,52rem)] py-1.5" : "max-w-6xl py-2.5",
         ].join(" ")}
       >
         <Link to="/" className="flex items-center gap-2.5 pl-1 font-display text-sm font-bold" aria-label={`${SITE.name} home`}>
@@ -101,7 +101,7 @@ export default function Navbar() {
                   href={mediaUrl(resume.file_url)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-primary group !px-4 !py-2 text-xs"
+                  className="btn-primary group !px-5 !py-2.5 text-xs sm:!px-6"
                 >
                   Resume
                   <ArrowUpRight

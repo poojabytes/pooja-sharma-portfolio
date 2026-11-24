@@ -3,7 +3,7 @@ import Magnetic from "@/components/effects/Magnetic";
 import { requestOwnerLogin } from "@/components/owner/OwnerToolbar";
 import { SITE } from "@/constants/site";
 import { useAuth } from "@/context/AuthContext";
-import { socialIcon, sortedSocials } from "@/utils/social";
+import { iconSocialLinks, socialIcon } from "@/utils/social";
 import type { SocialLink } from "@/types/portfolio";
 
 type Props = {
@@ -40,8 +40,8 @@ export default function Footer({ socialLinks, email }: Props) {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          {sortedSocials(socialLinks).map((link) => {
+        <div className="flex w-full flex-wrap items-center gap-3 md:w-auto">
+          {iconSocialLinks(socialLinks).map((link) => {
             const Icon = socialIcon(link.platform);
             return (
               <a
@@ -65,7 +65,7 @@ export default function Footer({ socialLinks, email }: Props) {
             <button
               type="button"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="btn-ghost group ml-2 !px-4"
+              className="btn-ghost group min-w-[10.5rem] flex-1 !px-6 sm:ml-2 sm:flex-none"
             >
               Back to top
               <ArrowUp

@@ -34,7 +34,7 @@ export default function ExperienceTimeline({ items }: Props) {
       {/* Track + scroll-driven progress line */}
       <div
         aria-hidden
-        className="absolute bottom-0 left-4 top-0 w-px -translate-x-1/2 bg-border md:left-1/2"
+        className="absolute bottom-0 left-4 top-0 w-px -translate-x-1/2 bg-border lg:left-1/2"
       >
         <motion.div
           style={{ scaleY: progress }}
@@ -55,11 +55,11 @@ export default function ExperienceTimeline({ items }: Props) {
           const tech = splitTechnologies(item.technologies);
 
           return (
-            <li key={item.id} className="relative grid md:grid-cols-2 md:gap-16">
+            <li key={item.id} className="relative grid lg:grid-cols-2 lg:gap-16">
               {/* Node */}
               <div
                 aria-hidden
-                className="absolute left-4 top-8 z-10 -translate-x-1/2 md:left-1/2"
+                className="absolute left-4 top-8 z-10 -translate-x-1/2 lg:left-1/2"
               >
                 <motion.span
                   className="relative block h-4 w-4 rounded-full border-2 border-accent bg-background"
@@ -76,7 +76,7 @@ export default function ExperienceTimeline({ items }: Props) {
               </div>
 
               <motion.div
-                className={`pl-11 md:pl-0 ${fromLeft ? "md:col-start-1" : "md:col-start-2"}`}
+                className={`pl-11 lg:pl-0 ${fromLeft ? "lg:col-start-1" : "lg:col-start-2"}`}
                 initial={{ opacity: 0, x: fromLeft ? -48 : 48 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-80px" }}

@@ -13,3 +13,14 @@ export function socialIcon(platform: string): LucideIcon {
 export function sortedSocials(links: SocialLink[]): SocialLink[] {
   return [...links].sort((a, b) => a.display_order - b.display_order);
 }
+
+/** Email is shown via profile mailto / contact CTA — skip duplicate icon rows. */
+export function isEmailSocial(platform: string, url?: string): boolean {
+  const p = platform.toLowerCase();
+  const u = (url ?? "").toLowerCase();
+  return p.includes("mail") || p.includes("email") || u.startsWith("mailto:");
+}
+
+export function iconSocialLinks(links: SocialLink[]): SocialLink[] {
+  return sortedSocials(links).filter((l) => !isEmailSocial(l.platform, l.url));
+}

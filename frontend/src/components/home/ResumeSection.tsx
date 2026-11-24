@@ -18,7 +18,7 @@ export default function ResumeSection({ resume }: Props) {
       <SectionHeading eyebrow="Resume" title="Download CV." highlight={["CV"]} />
       {resume ? (
         <TiltCard max={3} className="bento-card g-border">
-          <div className="relative z-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="relative z-10 flex w-full flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-4">
               <div className="rounded-2xl bg-accent/15 p-4 text-accent">
                 <FileText className="h-7 w-7" aria-hidden />
@@ -30,13 +30,13 @@ export default function ResumeSection({ resume }: Props) {
                 </p>
               </div>
             </div>
-            <Magnetic>
+            <Magnetic className="w-full sm:w-auto">
               <a
                 href={mediaUrl(resume.file_url)}
                 target="_blank"
                 rel="noopener noreferrer"
                 download
-                className="btn-primary group"
+                className="btn-primary group w-full justify-center sm:w-auto sm:min-w-[12.5rem]"
               >
                 <Download
                   className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"

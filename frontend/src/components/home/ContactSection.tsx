@@ -9,7 +9,7 @@ import MessagesEditor from "@/components/owner/editors/MessagesEditor";
 import SocialLinksEditor from "@/components/owner/editors/SocialLinksEditor";
 import { useToast } from "@/context/ToastContext";
 import type { SocialLink } from "@/types/portfolio";
-import { socialIcon, sortedSocials } from "@/utils/social";
+import { iconSocialLinks, socialIcon } from "@/utils/social";
 
 type Props = {
   email?: string | null;
@@ -34,7 +34,7 @@ export default function ContactSection({ email, socialLinks = [] }: Props) {
 
   return (
     <Section id="contact" tone="violet" side="left" className="!pb-24">
-      <div className="relative overflow-hidden rounded-[2.5rem] border border-border bg-secondary p-6 sm:p-10 md:p-14">
+      <div className="relative overflow-hidden rounded-3xl border border-border bg-secondary p-4 sm:rounded-[2.5rem] sm:p-8 md:p-14">
         {/* Soft decorative circles */}
         <div
           aria-hidden
@@ -49,7 +49,7 @@ export default function ContactSection({ email, socialLinks = [] }: Props) {
         <div className="relative grid gap-12 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-6">
             <p className="label mb-5">Contact · 05</p>
-            <h2 className="font-display text-4xl font-extrabold uppercase leading-[1] tracking-tight sm:text-5xl xl:text-6xl">
+            <h2 className="font-display text-[clamp(1.65rem,6.5vw,3.75rem)] font-extrabold uppercase leading-[1.05] tracking-tight sm:text-5xl xl:text-6xl">
               <SplitText text="Have a project in mind?" className="block" />
               <SplitText
                 text="Let's build something great."
@@ -70,13 +70,13 @@ export default function ContactSection({ email, socialLinks = [] }: Props) {
             </motion.p>
 
             {email ? (
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Magnetic>
+              <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+                <Magnetic className="w-full sm:w-auto">
                   <a
                     href={`mailto:${email}`}
-                    className="btn-primary group relative overflow-hidden !px-6 !py-3.5 text-base"
+                    className="btn-primary group relative w-full justify-center overflow-hidden !px-5 !py-3.5 text-sm sm:w-auto sm:min-w-[min(100%,22rem)] sm:!px-6 sm:text-base"
                   >
-                    <span className="relative block h-6 overflow-hidden">
+                    <span className="relative block h-6 min-w-0 flex-1 overflow-hidden text-center sm:text-left">
                       <span className="block transition-transform duration-300 group-hover:-translate-y-full">
                         {email}
                       </span>
@@ -96,7 +96,7 @@ export default function ContactSection({ email, socialLinks = [] }: Props) {
                 <button
                   type="button"
                   onClick={() => void copy()}
-                  className="btn-ghost !px-4"
+                  className="btn-ghost w-full justify-center sm:w-auto sm:!px-4"
                   aria-label="Copy email address"
                 >
                   {copied ? (
@@ -108,9 +108,9 @@ export default function ContactSection({ email, socialLinks = [] }: Props) {
               </div>
             ) : null}
 
-            {socialLinks.length > 0 ? (
+            {iconSocialLinks(socialLinks).length > 0 ? (
               <ul className="mt-8 flex flex-wrap gap-3">
-                {sortedSocials(socialLinks).map((l) => {
+                {iconSocialLinks(socialLinks).map((l) => {
                   const Icon = socialIcon(l.platform);
                   return (
                     <li key={l.id}>

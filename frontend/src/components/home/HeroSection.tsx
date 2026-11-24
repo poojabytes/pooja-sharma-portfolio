@@ -8,7 +8,7 @@ import { useInteractiveMotion } from "@/hooks/useInteractiveMotion";
 import { useMouseParallax } from "@/hooks/useMouseParallax";
 import type { Education, Profile, Resume, Skill, SocialLink } from "@/types/portfolio";
 import { formatYearRange } from "@/utils/format";
-import { socialIcon, sortedSocials } from "@/utils/social";
+import { iconSocialLinks, socialIcon } from "@/utils/social";
 
 type Props = {
   profile: Profile | null;
@@ -90,7 +90,7 @@ export default function HeroSection({
     "Full Stack Developer",
   ].slice(0, BADGE_SLOTS.length);
 
-  const socials = sortedSocials(socialLinks);
+  const socials = iconSocialLinks(socialLinks);
   const edu = education[0];
   const portrait = profile?.profile_image_url ?? FALLBACK_PORTRAIT;
   const portraitBlend = profile?.profile_image_url ? "mix-blend-multiply" : "";
