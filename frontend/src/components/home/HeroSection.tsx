@@ -106,8 +106,8 @@ export default function HeroSection({
   const edu = education[0];
 
   const portrait = profile?.profile_image_url ?? FALLBACK_PORTRAIT;
-  // Uploaded photos usually keep a white backdrop; multiply lets it melt into the peach disc.
-  const portraitBlend = profile?.profile_image_url ? "mix-blend-multiply" : "";
+  // Studio / white-backdrop portraits melt into the peach disc with multiply.
+  const portraitBlend = "mix-blend-multiply";
 
   const iconBtn =
     "flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted transition duration-300 hover:-translate-y-1 hover:border-accent/60 hover:bg-accent/10 hover:text-foreground";
@@ -264,7 +264,7 @@ export default function HeroSection({
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className={`h-full w-full select-none object-cover object-[center_12%] ${portraitBlend}`}
+                  className={`h-full w-full select-none object-cover object-[center_18%] ${portraitBlend}`}
                   draggable={false}
                 />
               </div>
