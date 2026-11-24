@@ -24,10 +24,10 @@ type Props = {
 const FALLBACK_PORTRAIT = "/images/pooja-portrait.webp";
 
 const BADGE_SLOTS = [
-  { style: { top: "10%", left: "20%" }, depth: 22, delay: "0s" },
-  { style: { top: "26%", right: "18%" }, depth: -18, delay: "1.2s" },
-  { style: { top: "54%", left: "16%" }, depth: 16, delay: "2s" },
-  { style: { top: "62%", right: "15%" }, depth: -24, delay: "0.6s" },
+  { style: { top: "8%", left: "8%" }, depth: 22, delay: "0s" },
+  { style: { top: "14%", right: "6%" }, depth: -18, delay: "1.2s" },
+  { style: { top: "58%", left: "4%" }, depth: 16, delay: "2s" },
+  { style: { top: "66%", right: "4%" }, depth: -24, delay: "0.6s" },
 ] as const;
 
 function FloatingBadge({
@@ -176,7 +176,7 @@ export default function HeroSection({
 
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto max-w-6xl px-4 pt-10 text-center md:px-6 md:pt-14">
+      <div className="mx-auto max-w-6xl px-4 pt-6 text-center sm:pt-8 md:px-6 md:pt-10">
         <motion.span
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -218,7 +218,7 @@ export default function HeroSection({
             />
           </svg>
 
-          <h1 className="font-display text-[2.1rem] font-extrabold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="mx-auto max-w-4xl font-display text-[1.85rem] font-extrabold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
             <SplitText
               text={`I'm ${firstName},`}
               highlight={[firstName]}
@@ -231,11 +231,11 @@ export default function HeroSection({
         </div>
 
         {/* Portrait stage */}
-        <div className="relative mx-auto mt-6 w-full max-w-5xl overflow-hidden sm:mt-8">
-          <div className="relative mx-auto h-[22rem] w-full max-w-[22rem] sm:h-[28rem] sm:max-w-[28rem] lg:h-[35rem] lg:max-w-5xl">
+        <div className="relative mx-auto mt-6 w-full max-w-5xl sm:mt-8">
+          <div className="relative mx-auto h-[20rem] w-full max-w-[20rem] overflow-hidden sm:h-[26rem] sm:max-w-[26rem] lg:h-[32rem] lg:max-w-5xl">
             <div className="absolute inset-0 overflow-hidden">
               {/* Peach disc */}
-              <div className="absolute bottom-0 left-1/2 w-[min(35rem,92%)] -translate-x-1/2 translate-y-[36%]">
+              <div className="absolute bottom-0 left-1/2 w-[min(32rem,92%)] -translate-x-1/2 translate-y-[28%]">
                 <motion.div
                   style={{ x: discX, y: discY }}
                   initial={{ scale: 0.7, opacity: 0 }}
@@ -247,13 +247,13 @@ export default function HeroSection({
               {/* Thin decorative outline around the disc */}
               <div
                 aria-hidden
-                className="absolute bottom-0 left-1/2 w-[min(40rem,100%)] -translate-x-1/2 translate-y-[38%]"
+                className="absolute bottom-0 left-1/2 w-[min(36rem,100%)] -translate-x-1/2 translate-y-[30%]"
               >
                 <div className="aspect-square w-full rounded-full border border-accent/25" />
               </div>
 
-              {/* Portrait — clipped to the peach disc so full-body photos stay clean */}
-              <div className="absolute bottom-0 left-1/2 h-[94%] w-[min(40rem,100%)] -translate-x-1/2 overflow-hidden rounded-full">
+              {/* Portrait clipped to circle — face-forward crop, no CTA overlay */}
+              <div className="absolute bottom-0 left-1/2 h-[92%] w-[min(36rem,100%)] -translate-x-1/2 overflow-hidden rounded-full">
                 <motion.img
                   src={portrait}
                   alt={`Portrait of ${fullName}`}
@@ -264,7 +264,7 @@ export default function HeroSection({
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className={`h-full w-full select-none object-cover object-[center_18%] ${portraitBlend}`}
+                  className={`h-full w-full select-none object-cover object-[center_15%] ${portraitBlend}`}
                   draggable={false}
                 />
               </div>
@@ -308,71 +308,44 @@ export default function HeroSection({
             >
               {stats}
             </motion.div>
-
-            {/* Buttons overlapping the portrait — desktop / large tablets */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 0.6 }}
-              className="absolute inset-x-0 bottom-5 z-20 hidden flex-wrap items-center justify-center gap-3 sm:flex"
-            >
-              <Magnetic>
-                <HashLink id="projects" className="btn-primary group">
-                  Portfolio
-                  <ArrowUpRight
-                    className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                    aria-hidden
-                  />
-                </HashLink>
-              </Magnetic>
-              <Magnetic>
-                <HashLink id="contact" className="btn-ghost !bg-white !text-[#2B1B18]">
-                  Hire Me
-                </HashLink>
-              </Magnetic>
-              {resume ? (
-                <Magnetic>
-                  <a
-                    href={mediaUrl(resume.file_url)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-ghost group !bg-white !text-[#2B1B18]"
-                  >
-                    <Download
-                      className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"
-                      aria-hidden
-                    />
-                    Resume
-                  </a>
-                </Magnetic>
-              ) : null}
-            </motion.div>
           </div>
 
-          {/* Mobile CTAs sit below the portrait so they never collide with the photo */}
+          {/* CTAs live under the portrait — never over the face or blazer */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.85, duration: 0.5 }}
-            className="mt-5 flex flex-wrap items-center justify-center gap-2.5 sm:hidden"
+            className="relative z-10 mx-auto mt-6 flex w-full max-w-lg flex-wrap items-center justify-center gap-3 sm:mt-8"
           >
-            <HashLink id="projects" className="btn-primary group !px-5 !py-2.5 text-sm">
-              Portfolio
-              <ArrowUpRight className="h-4 w-4" aria-hidden />
-            </HashLink>
-            <HashLink id="contact" className="btn-ghost !px-5 !py-2.5 text-sm">
-              Hire Me
-            </HashLink>
+            <Magnetic>
+              <HashLink id="projects" className="btn-primary group min-w-[8.5rem]">
+                Portfolio
+                <ArrowUpRight
+                  className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  aria-hidden
+                />
+              </HashLink>
+            </Magnetic>
+            <Magnetic>
+              <HashLink id="contact" className="btn-ghost min-w-[8.5rem]">
+                Hire Me
+              </HashLink>
+            </Magnetic>
             {resume ? (
-              <a
-                href={mediaUrl(resume.file_url)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-ghost group !px-5 !py-2.5 text-sm"
-              >
-                <Download className="h-4 w-4" aria-hidden />
-                Resume
-              </a>
+              <Magnetic>
+                <a
+                  href={mediaUrl(resume.file_url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-ghost group min-w-[8.5rem]"
+                >
+                  <Download
+                    className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"
+                    aria-hidden
+                  />
+                  Resume
+                </a>
+              </Magnetic>
             ) : null}
           </motion.div>
         </div>
