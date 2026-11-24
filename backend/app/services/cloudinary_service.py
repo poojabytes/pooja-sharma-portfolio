@@ -1,4 +1,5 @@
 import logging
+import os
 import uuid
 from pathlib import Path
 from typing import Any
@@ -17,8 +18,16 @@ MAX_RESUME_BYTES = 10 * 1024 * 1024
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
 RESUME_EXTENSIONS = {".pdf"}
 
+
+def _uploads_root() -> Path:
+    # Vercel serverless filesystem is read-only except /tmp.
+    if os.getenv("VERCEL") == "1":
+        return Path("/tmp/portfolio-uploads")
+    return Path(__file__).resolve().parents[2] / "uploads"
+
+
 # Local fallback when Cloudinary is not configured (development / missing creds).
-UPLOADS_ROOT = Path(__file__).resolve().parents[2] / "uploads"
+UPLOADS_ROOT = _uploads_root()
 
 
 def cloudinary_configured() -> bool:
