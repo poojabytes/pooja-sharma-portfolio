@@ -43,8 +43,12 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
 
   const socials = iconSocialLinks(socialLinks);
   const edu = education[0];
-  const portrait = profile?.profile_image_url ?? FALLBACK_PORTRAIT;
-  const portraitBlend = profile?.profile_image_url ? "mix-blend-multiply" : "";
+  /** Hero uses the cutout asset so the peach disc stays centered; full uploads may be rectangular. */
+  const portrait = (() => {
+    const remote = profile?.profile_image_url;
+    if (remote?.includes("pooja-portrait")) return remote;
+    return FALLBACK_PORTRAIT;
+  })();
 
   const iconBtn =
     "flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-white/80 text-muted transition duration-300 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-accent/10 hover:text-foreground";
@@ -97,9 +101,9 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
   );
 
   return (
-    <section className="relative overflow-hidden pb-4">
+    <section className="relative isolate overflow-x-clip pb-4">
       <HeroTechMesh />
-      <div className="relative mx-auto max-w-7xl px-4 pt-8 text-center sm:pt-10 md:px-6 md:pt-12 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 pb-2 pt-10 text-center sm:pt-12 md:px-6 md:pt-14 lg:px-8 lg:pt-16">
         <header className="mx-auto flex max-w-3xl flex-col items-center gap-2 sm:gap-3">
           <h1 className="w-full font-display text-[2rem] font-extrabold leading-[1.12] tracking-tight text-foreground sm:text-5xl md:text-6xl">
             <SplitText
@@ -113,45 +117,48 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
           <HeroRoleTypewriter text={roleLine || ROLE_TYPEWRITER} charMs={100} />
         </header>
 
-        <div className="relative mx-auto mt-6 w-full max-w-6xl overflow-x-clip sm:mt-8">
-          <div className="grid items-end gap-8 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6 xl:gap-10">
+        <div className="relative mx-auto mt-5 w-full max-w-6xl sm:mt-8">
+          <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-8 xl:gap-10">
             <motion.div
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.55, duration: 0.55 }}
-              className="hidden pb-32 text-left lg:block lg:max-w-[16rem] xl:max-w-[18rem]"
+              className="hidden text-left lg:block lg:max-w-[16rem] xl:max-w-[18rem]"
             >
               {quote}
             </motion.div>
 
-            <div className="relative mx-auto w-full max-w-[21rem] sm:max-w-[27rem] lg:w-[26rem] lg:max-w-[26rem] xl:w-[28rem] xl:max-w-[28rem]">
-              <div className="relative h-[23rem] sm:h-[29rem] lg:h-[32rem] xl:h-[34rem]">
+            <div className="relative mx-auto w-full max-w-[18.5rem] sm:max-w-[22.5rem] lg:w-[24.5rem] lg:max-w-[24.5rem] xl:w-[26rem] xl:max-w-[26rem]">
+              <div className="relative mx-auto h-[min(22.5rem,calc(100svh-16.5rem))] w-full sm:h-[min(28rem,calc(100svh-17rem))] lg:h-[min(30rem,calc(100svh-18rem))]">
                 <motion.div
                   style={{ x: photoX, y: photoY }}
-                  className="absolute inset-0 flex items-end justify-center"
+                  className="absolute inset-0 mx-auto w-full max-w-full"
                 >
-                  <div className="relative w-fit max-h-[94%]">
+                  <div className="relative h-full w-full">
                     <motion.div
                       aria-hidden
-                      initial={{ scale: 0.92, opacity: 0 }}
+                      initial={{ scale: 0.94, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.8, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-                      className="pointer-events-none absolute left-1/2 top-[58%] z-0 aspect-square w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[rgb(var(--c-peach))] sm:top-[59%] sm:w-[92%]"
-                    />
+                      className="pointer-events-none absolute left-1/2 top-[44%] z-0 aspect-square w-[86%] -translate-x-1/2 -translate-y-1/2 sm:top-[45%] sm:w-[88%]"
+                    >
+                      <div className="absolute -inset-[7px] rounded-full border border-[rgb(var(--c-peach)/0.95)] opacity-90" />
+                      <div className="absolute inset-0 rounded-full bg-[rgb(var(--c-peach))] shadow-[0_0_0_1px_rgb(var(--c-peach)/0.35)]" />
+                    </motion.div>
 
                     <motion.img
                       src={portrait}
                       alt={`Portrait of ${fullName}`}
                       width={768}
                       height={951}
-                      sizes="(min-width: 1024px) 28rem, (min-width: 640px) 27rem, 21rem"
+                      sizes="(min-width: 1024px) 26rem, (min-width: 640px) 22.5rem, 18.5rem"
                       loading="eager"
                       fetchPriority="high"
                       decoding="async"
-                      initial={{ opacity: 0, y: 32 }}
+                      initial={{ opacity: 0, y: 24 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.85, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                      className={`relative z-[1] block h-[21.5rem] w-auto max-w-[21rem] select-none object-contain object-bottom drop-shadow-[0_10px_24px_rgba(43,27,24,0.07)] sm:h-[27rem] sm:max-w-[27rem] lg:h-[30rem] lg:max-w-[26rem] xl:h-[32rem] xl:max-w-[28rem] ${portraitBlend}`}
+                      className="absolute inset-x-0 bottom-0 z-[1] mx-auto h-[94%] w-full max-w-full select-none object-contain object-bottom drop-shadow-[0_10px_24px_rgba(43,27,24,0.07)]"
                       draggable={false}
                     />
                   </div>
@@ -161,7 +168,7 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.75, duration: 0.5 }}
-                  className="absolute inset-x-0 bottom-3 z-20 flex flex-col items-stretch gap-2 px-1 sm:bottom-5 sm:flex-row sm:justify-center sm:gap-3 sm:px-0"
+                  className="absolute inset-x-0 bottom-2 z-20 flex flex-col items-stretch gap-2 px-1 sm:bottom-4 sm:flex-row sm:justify-center sm:gap-3 sm:px-0"
                 >
                   <Magnetic className="sm:w-auto">
                     <HashLink
@@ -191,7 +198,7 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
               initial={{ opacity: 0, x: 16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.65, duration: 0.55 }}
-              className="hidden pb-32 text-right lg:block lg:justify-self-end lg:max-w-[16rem] xl:max-w-[18rem]"
+              className="hidden text-right lg:block lg:justify-self-end lg:max-w-[16rem] xl:max-w-[18rem]"
             >
               {stats}
             </motion.div>
