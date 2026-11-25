@@ -70,7 +70,7 @@ Details: [DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md)
 
 | Vercel project | Root | Entry |
 |--------------|------|--------|
-| pooja-portfolio-frontend | `frontend/` | `dist` after `npm run build` |
+| itspooja | `frontend/` | `dist` after `npm run build` |
 | pooja-portfolio-backend | `backend/` | `index.py` → `app.main:app` |
 
 ## Phase roadmap

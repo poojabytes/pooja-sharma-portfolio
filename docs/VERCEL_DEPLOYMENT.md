@@ -1,12 +1,12 @@
 # Vercel Deployment
 
-Two Vercel projects from one GitHub monorepo: **pooja-portfolio-frontend** and **pooja-portfolio-backend**.
+Two Vercel projects from one GitHub monorepo: **itspooja** (frontend) and **pooja-portfolio-backend**.
 
 ## Project configuration
 
 | Vercel project | Root | Build | Output |
 |----------------|------|-------|--------|
-| `pooja-portfolio-frontend` | `frontend` | `npm run build` | `dist` |
+| `itspooja` | `frontend` | `npm run build` | `dist` |
 | `pooja-portfolio-backend` | `backend` | (auto Python) | `index.py` → FastAPI |
 
 ## Step-by-step
@@ -28,7 +28,7 @@ Two Vercel projects from one GitHub monorepo: **pooja-portfolio-frontend** and *
 15. Set frontend env: `VITE_API_BASE_URL=https://<backend-domain>` (no trailing slash).
 16. Create backend project with root directory **`backend`**.
 17. Set backend env: `DATABASE_URL`, `JWT_SECRET_KEY`, Cloudinary, `ENVIRONMENT=production`, etc.
-18. Set `FRONTEND_URL` to the **exact** deployed frontend origin (e.g. `https://pooja-portfolio-frontend.vercel.app`).
+18. Set `FRONTEND_URL` to the **exact** deployed frontend origin (e.g. `https://itspooja.vercel.app`).
 19. Deploy the **backend** first.
 20. Verify `GET /health`, `GET /docs`, and `GET /api/v1/profile`.
 21. Deploy the **frontend**.

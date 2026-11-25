@@ -6,7 +6,7 @@ Production-ready portfolio with a public site and private admin dashboard.
 
 | Path | Description |
 |------|-------------|
-| `frontend/` | React + TypeScript + Vite (Vercel: **pooja-portfolio-frontend**) |
+| `frontend/` | React + TypeScript + Vite (live: **https://itspooja.vercel.app**, Vercel project **itspooja**) |
 | `backend/` | FastAPI + SQLAlchemy (Vercel: **pooja-portfolio-backend**) |
 | `docs/` | Architecture, API, deployment, and setup guides |
 

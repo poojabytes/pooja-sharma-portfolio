@@ -68,5 +68,5 @@ Import `https://github.com/poojabytes/pooja-sharma-portfolio` twice (frontend + 
 
 | Path | Vercel project |
 |------|----------------|
-| `frontend/` | `pooja-portfolio-frontend` |
+| `frontend/` | `itspooja` |
 | `backend/` | `pooja-portfolio-backend` |
