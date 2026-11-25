@@ -31,10 +31,9 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
   const { scrollY } = useScroll();
   const scrollHint = useTransform(scrollY, [0, 140], [1, 0]);
 
-  const photoX = useTransform(px, (v) => v * 6);
-  const photoY = useTransform(py, (v) => v * 4);
-  const discX = useTransform(px, (v) => v * -10);
-  const discY = useTransform(py, (v) => v * -6);
+  /** Portrait + peach disc move together so the halo stays centered on every screen size. */
+  const photoX = useTransform(px, (v) => v * 5);
+  const photoY = useTransform(py, (v) => v * 3);
 
   const fullName = profile?.name ?? SITE.name;
   const firstName = fullName.split(" ")[0];
@@ -114,20 +113,21 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
 
         <div className="relative mx-auto mt-8 w-full max-w-5xl overflow-x-clip">
           <div className="relative mx-auto h-[23rem] w-full max-w-[24rem] sm:h-[30rem] sm:max-w-[30rem] lg:h-[34rem] lg:max-w-[38rem] xl:max-w-[42rem]">
-            <div className="absolute inset-0">
-              <div className="absolute bottom-[-8%] left-1/2 w-[min(34rem,92%)] -translate-x-1/2">
+            <motion.div
+              style={{ x: photoX, y: photoY }}
+              className="absolute inset-0 flex items-end justify-center"
+            >
+              <div className="relative flex h-[97%] w-full max-w-[min(100%,22rem)] items-end justify-center sm:max-w-[28rem] lg:max-w-[36rem]">
                 <motion.div
-                  style={{ x: discX, y: discY }}
+                  aria-hidden
                   initial={{ scale: 0.92, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative aspect-square w-full"
+                  className="pointer-events-none absolute bottom-[4%] left-1/2 z-0 aspect-square w-[88%] max-w-[20.5rem] -translate-x-1/2 sm:bottom-[3%] sm:w-[90%] sm:max-w-[26rem] lg:max-w-[32rem]"
                 >
-                  <div className="absolute inset-0 rounded-full bg-[rgb(var(--c-peach))]" />
+                  <div className="h-full w-full rounded-full bg-[rgb(var(--c-peach))]" />
                 </motion.div>
-              </div>
 
-              <div className="absolute bottom-0 left-1/2 z-[1] h-[97%] -translate-x-1/2">
                 <motion.img
                   src={portrait}
                   alt={`Portrait of ${fullName}`}
@@ -137,15 +137,14 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
-                  style={{ x: photoX, y: photoY }}
                   initial={{ opacity: 0, y: 32 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.85, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  className={`h-full w-auto max-w-none select-none object-contain object-bottom drop-shadow-[0_10px_24px_rgba(43,27,24,0.07)] ${portraitBlend}`}
+                  className={`relative z-[1] mx-auto h-full w-auto max-w-full select-none object-contain object-bottom drop-shadow-[0_10px_24px_rgba(43,27,24,0.07)] ${portraitBlend}`}
                   draggable={false}
                 />
               </div>
-            </div>
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, x: -16 }}
@@ -168,10 +167,10 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.75, duration: 0.5 }}
-              className="absolute inset-x-0 bottom-5 z-20 flex flex-wrap items-center justify-center gap-3"
+              className="absolute inset-x-0 bottom-4 z-20 flex items-center justify-center gap-3 px-2 sm:bottom-5"
             >
-              <Magnetic>
-                <HashLink id="resume" className="btn-primary group min-w-[9rem]">
+              <Magnetic className="min-w-0 flex-1 sm:flex-none">
+                <HashLink id="resume" className="btn-primary group w-full min-w-[8.25rem] justify-center sm:w-auto sm:min-w-[9rem]">
                   Portfolio
                   <ArrowUpRight
                     className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
@@ -179,8 +178,8 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
                   />
                 </HashLink>
               </Magnetic>
-              <Magnetic>
-                <HashLink id="contact" className="btn-ghost min-w-[9rem] !bg-white">
+              <Magnetic className="min-w-0 flex-1 sm:flex-none">
+                <HashLink id="contact" className="btn-ghost w-full min-w-[8.25rem] justify-center !bg-white sm:w-auto sm:min-w-[9rem]">
                   Hire Me
                 </HashLink>
               </Magnetic>
