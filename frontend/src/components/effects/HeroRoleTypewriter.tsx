@@ -67,7 +67,7 @@ export default function HeroRoleTypewriter({ text, charMs = 100, className = "" 
 
   return (
     <p
-      className={`mx-auto w-full max-w-3xl px-2 font-display text-[0.6875rem] font-black uppercase leading-snug tracking-[0.12em] text-foreground sm:text-sm sm:tracking-[0.18em] md:text-base lg:text-lg ${className}`}
+      className={`mx-auto w-full max-w-3xl px-2 font-display text-xl font-bold leading-snug tracking-tight text-foreground sm:text-2xl md:text-[1.75rem] lg:text-3xl ${className}`}
       aria-label={text}
     >
       <span className="inline-grid justify-items-center">

@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Quote, Sparkles } from "lucide-react";
 import HashLink from "@/components/common/HashLink";
 import Magnetic from "@/components/effects/Magnetic";
+import HeroRoleTypewriter from "@/components/effects/HeroRoleTypewriter";
 import HeroTechMesh from "@/components/effects/HeroTechMesh";
 import SplitText from "@/components/effects/SplitText";
 import { publicRole, SITE } from "@/constants/site";
@@ -29,8 +30,6 @@ export default function HeroSection({ profile }: Props) {
 
   const fullName = profile?.name ?? SITE.name;
   const firstName = fullName.split(" ")[0];
-  const subtitleRole = profile?.designation?.trim() || publicRole(profile?.designation);
-
   const portrait = (() => {
     const remote = profile?.profile_image_url;
     if (remote?.includes("pooja-portrait")) return remote;
@@ -73,14 +72,7 @@ export default function HeroSection({ profile }: Props) {
               className="block w-full text-center text-foreground"
             />
           </h1>
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.32, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="font-display text-base font-bold text-foreground sm:text-xl md:text-2xl"
-          >
-            {subtitleRole}
-          </motion.p>
+          <HeroRoleTypewriter text={publicRole()} charMs={100} />
         </header>
 
         <div className="relative mx-auto mt-8 w-full max-w-6xl sm:mt-10 lg:mt-12">
