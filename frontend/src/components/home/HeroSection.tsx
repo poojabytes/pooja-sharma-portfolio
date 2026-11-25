@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, GraduationCap, Quote } from "lucide-react";
 import HashLink from "@/components/common/HashLink";
 import Magnetic from "@/components/effects/Magnetic";
+import HeroRoleTypewriter from "@/components/effects/HeroRoleTypewriter";
 import HeroTechMesh from "@/components/effects/HeroTechMesh";
 import SplitText from "@/components/effects/SplitText";
 import { publicRole, SITE } from "@/constants/site";
@@ -20,6 +21,7 @@ type Props = {
 };
 
 const FALLBACK_PORTRAIT = "/images/pooja-portrait.webp?v=pro-sharp-1";
+const ROLE_TYPEWRITER = "FULL STACK DEVELOPER";
 
 function degreeShort(degree: string): string {
   return degree.match(/\(([^)]+)\)/)?.[1] ?? degree;
@@ -31,13 +33,13 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
   const { scrollY } = useScroll();
   const scrollHint = useTransform(scrollY, [0, 140], [1, 0]);
 
-  /** Portrait + peach disc move together so the halo stays centered on every screen size. */
+  /** Portrait and peach disc share one transform so the halo stays centered on the photo. */
   const photoX = useTransform(px, (v) => v * 5);
   const photoY = useTransform(py, (v) => v * 3);
 
   const fullName = profile?.name ?? SITE.name;
   const firstName = fullName.split(" ")[0];
-  const role = publicRole(profile?.designation);
+  const roleLine = publicRole(profile?.designation).toUpperCase();
 
   const socials = iconSocialLinks(socialLinks);
   const edu = education[0];
@@ -98,21 +100,18 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
     <section className="relative overflow-hidden pb-4">
       <HeroTechMesh />
       <div className="relative mx-auto max-w-7xl px-4 pt-8 text-center sm:pt-10 md:px-6 md:pt-12 lg:px-8">
-        <h1 className="mx-auto flex max-w-3xl flex-col items-center gap-1 px-2 text-center font-display text-[2rem] font-extrabold leading-[1.12] tracking-tight text-foreground sm:gap-2 sm:text-5xl md:text-6xl">
-          <SplitText
-            text={`I'm ${firstName},`}
-            highlight={[firstName]}
-            whenInView={false}
-            delay={0.1}
-            className="block w-full text-center"
-          />
-          <SplitText
-            text={role}
-            whenInView={false}
-            delay={0.28}
-            className="block w-full max-w-[18ch] text-center text-[1.55rem] leading-tight sm:max-w-none sm:text-[inherit]"
-          />
-        </h1>
+        <header className="mx-auto flex max-w-3xl flex-col items-center gap-2 sm:gap-3">
+          <h1 className="w-full font-display text-[2rem] font-extrabold leading-[1.12] tracking-tight text-foreground sm:text-5xl md:text-6xl">
+            <SplitText
+              text={`I'm ${firstName},`}
+              highlight={[firstName]}
+              whenInView={false}
+              delay={0.1}
+              className="block w-full text-center text-foreground"
+            />
+          </h1>
+          <HeroRoleTypewriter text={roleLine || ROLE_TYPEWRITER} charMs={100} />
+        </header>
 
         <div className="relative mx-auto mt-6 w-full max-w-6xl overflow-x-clip sm:mt-8">
           <div className="grid items-end gap-8 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6 xl:gap-10">
@@ -131,13 +130,13 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
                   style={{ x: photoX, y: photoY }}
                   className="absolute inset-0 flex items-end justify-center"
                 >
-                  <div className="relative h-[94%] w-[82%]">
+                  <div className="relative w-fit max-h-[94%]">
                     <motion.div
                       aria-hidden
                       initial={{ scale: 0.92, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.8, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-                      className="absolute bottom-[2%] left-1/2 z-0 aspect-square w-full -translate-x-1/2 rounded-full bg-[rgb(var(--c-peach))]"
+                      className="pointer-events-none absolute left-1/2 top-[58%] z-0 aspect-square w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[rgb(var(--c-peach))] sm:top-[59%] sm:w-[92%]"
                     />
 
                     <motion.img
@@ -152,7 +151,7 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
                       initial={{ opacity: 0, y: 32 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.85, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                      className={`relative z-[1] mx-auto h-full w-full select-none object-contain object-bottom drop-shadow-[0_10px_24px_rgba(43,27,24,0.07)] ${portraitBlend}`}
+                      className={`relative z-[1] block h-[21.5rem] w-auto max-w-[21rem] select-none object-contain object-bottom drop-shadow-[0_10px_24px_rgba(43,27,24,0.07)] sm:h-[27rem] sm:max-w-[27rem] lg:h-[30rem] lg:max-w-[26rem] xl:h-[32rem] xl:max-w-[28rem] ${portraitBlend}`}
                       draggable={false}
                     />
                   </div>
