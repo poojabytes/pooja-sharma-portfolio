@@ -1,6 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import type { ReactNode } from "react";
-import { ArrowUpRight, Crosshair, GraduationCap, Quote, Sparkles, Star } from "lucide-react";
+import { ArrowUpRight, Quote, Sparkles } from "lucide-react";
 import HashLink from "@/components/common/HashLink";
 import Magnetic from "@/components/effects/Magnetic";
 import HeroTechMesh from "@/components/effects/HeroTechMesh";
@@ -9,9 +8,6 @@ import { publicRole, SITE } from "@/constants/site";
 import { useInteractiveMotion } from "@/hooks/useInteractiveMotion";
 import { useMouseParallax } from "@/hooks/useMouseParallax";
 import type { Education, Profile, Resume, SocialLink } from "@/types/portfolio";
-import { formatYearRange } from "@/utils/format";
-import { iconSocialLinks, socialIcon } from "@/utils/social";
-import EmailIconLink from "@/components/common/EmailIconLink";
 
 type Props = {
   profile: Profile | null;
@@ -22,20 +18,7 @@ type Props = {
 
 const FALLBACK_PORTRAIT = "/images/pooja-portrait.webp?v=pro-sharp-1";
 
-function degreeShort(degree: string): string {
-  return degree.match(/\(([^)]+)\)/)?.[1] ?? degree;
-}
-
-function HeroPill({ children, icon }: { children: string; icon?: ReactNode }) {
-  return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-white/92 px-4 py-2 text-xs font-semibold text-foreground shadow-[0_4px_14px_rgb(43_27_24/0.06)] backdrop-blur-sm">
-      {icon}
-      {children}
-    </span>
-  );
-}
-
-export default function HeroSection({ profile, socialLinks, education }: Props) {
+export default function HeroSection({ profile }: Props) {
   const interactive = useInteractiveMotion();
   const { x: px, y: py } = useMouseParallax(interactive);
   const { scrollY } = useScroll();
@@ -48,61 +31,27 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
   const firstName = fullName.split(" ")[0];
   const subtitleRole = profile?.designation?.trim() || publicRole(profile?.designation);
 
-  const socials = iconSocialLinks(socialLinks);
-  const edu = education[0];
   const portrait = (() => {
     const remote = profile?.profile_image_url;
     if (remote?.includes("pooja-portrait")) return remote;
     return FALLBACK_PORTRAIT;
   })();
 
-  const iconBtn =
-    "flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-white/80 text-muted transition duration-300 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-accent/10 hover:text-foreground";
-
   const quote = (
-    <div className="max-w-[15rem]">
+    <div className="max-w-[15rem] text-left">
       <Quote className="h-6 w-6 fill-accent/20 text-accent" aria-hidden />
       <p className="mt-3 text-sm leading-relaxed text-muted">
         I build scalable backend systems, modern applications and meaningful digital experiences.
       </p>
-      {socials.length > 0 || profile?.email ? (
-        <div className="mt-4 flex flex-wrap gap-2">
-          {socials.map((l) => {
-            const Icon = socialIcon(l.platform);
-            return (
-              <a
-                key={l.id}
-                href={l.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={iconBtn}
-                aria-label={l.label}
-              >
-                <Icon className="h-4 w-4" />
-              </a>
-            );
-          })}
-          {profile?.email ? <EmailIconLink email={profile.email} size="sm" /> : null}
-        </div>
-      ) : null}
     </div>
   );
 
-  const stats = (
-    <div>
-      {edu ? (
-        <div>
-          <div className="flex items-center gap-2 lg:justify-end">
-            <GraduationCap className="h-5 w-5 text-accent" aria-hidden />
-            <p className="font-display text-3xl font-extrabold leading-none text-foreground md:text-4xl">
-              {degreeShort(edu.degree)}
-            </p>
-          </div>
-          <p className="mt-1.5 text-xs font-medium text-muted">
-            Education · {formatYearRange(edu.start_year, edu.end_year)}
-          </p>
-        </div>
-      ) : null}
+  const quoteRight = (
+    <div className="max-w-[15rem] text-right">
+      <Quote className="h-6 w-6 fill-accent/20 text-accent lg:ml-auto" aria-hidden />
+      <p className="mt-3 text-sm leading-relaxed text-muted">
+        Clean APIs, reliable databases and thoughtful interfaces, crafted to perform and built to last.
+      </p>
     </div>
   );
 
@@ -135,27 +84,15 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
         </header>
 
         <div className="relative mx-auto mt-8 w-full max-w-6xl sm:mt-10 lg:mt-12">
-          <Crosshair
-            className="pointer-events-none absolute right-[2%] top-[42%] z-10 hidden h-5 w-5 text-accent lg:block xl:right-[0%]"
-            aria-hidden
-          />
 
           <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6 xl:gap-12">
             <motion.div
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 0.55 }}
-              className="hidden flex-col items-start gap-12 lg:flex lg:max-w-[17rem] xl:max-w-[18rem]"
+              className="hidden items-start lg:flex lg:max-w-[17rem] xl:max-w-[18rem]"
             >
               {quote}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.72, duration: 0.45 }}
-                className="-mt-2"
-              >
-                <HeroPill icon={<Star className="h-3.5 w-3.5 text-accent" aria-hidden />}>FastAPI</HeroPill>
-              </motion.div>
             </motion.div>
 
             <div className="relative mx-auto w-full max-w-[19rem] sm:max-w-[23rem] lg:w-[27rem] lg:max-w-[27rem] xl:w-[29rem] xl:max-w-[29rem]">
@@ -233,16 +170,9 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
               initial={{ opacity: 0, x: 16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.58, duration: 0.55 }}
-              className="hidden flex-col items-end gap-10 lg:flex lg:max-w-[17rem] xl:max-w-[18rem]"
+              className="hidden items-start justify-self-end text-right lg:flex lg:max-w-[17rem] xl:max-w-[18rem]"
             >
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.68, duration: 0.45 }}
-              >
-                <HeroPill>{SITE.headline}</HeroPill>
-              </motion.div>
-              {stats}
+              {quoteRight}
             </motion.div>
           </div>
         </div>
@@ -250,9 +180,11 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
 
       <div className="mx-auto grid max-w-xl gap-8 px-4 pb-10 pt-8 text-left sm:grid-cols-2 sm:px-6 lg:hidden">
         {quote}
-        <div className="space-y-6 sm:text-right">
-          <HeroPill>{SITE.headline}</HeroPill>
-          {stats}
+        <div className="text-left sm:text-right">
+          <Quote className="h-6 w-6 fill-accent/20 text-accent sm:ml-auto" aria-hidden />
+          <p className="mt-3 text-sm leading-relaxed text-muted">
+            Clean APIs, reliable databases and thoughtful interfaces, crafted to perform and built to last.
+          </p>
         </div>
       </div>
 
