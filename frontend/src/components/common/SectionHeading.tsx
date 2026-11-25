@@ -9,11 +9,23 @@ type Props = {
   description?: string;
   id?: string;
   index?: string;
+  className?: string;
 };
 
-export default function SectionHeading({ eyebrow, title, highlight, description, id, index }: Props) {
+export default function SectionHeading({
+  eyebrow,
+  title,
+  highlight,
+  description,
+  id,
+  index,
+  className = "",
+}: Props) {
   return (
-    <header id={id} className="section-anchor mb-10 max-w-3xl md:mb-14">
+    <header
+      id={id}
+      className={`section-anchor mb-10 max-w-3xl md:mb-14 ${className}`.trim()}
+    >
       {eyebrow ? (
         <motion.p
           className="label mb-3"

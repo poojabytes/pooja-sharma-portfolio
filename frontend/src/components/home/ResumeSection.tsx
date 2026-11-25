@@ -13,10 +13,10 @@ type Props = {
 export default function ResumeSection({ resume }: Props) {
   return (
     <Section id="resume" tone="violet" side="left" className="!py-16 md:!py-20">
-      <SectionHeading eyebrow="Resume" title="Download CV" highlight={["CV"]} />
+      <SectionHeading eyebrow="Resume" title="Download CV" highlight={["CV"]} className="max-w-none" />
       {resume ? (
-        <article className="bento-card is-static max-w-3xl">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <article className="bento-card is-static w-full md:p-8 lg:p-9">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
             <div className="flex min-w-0 flex-1 items-start gap-4">
               <div className="shrink-0 rounded-2xl bg-accent/10 p-3 text-accent">
                 <FileText className="h-7 w-7" aria-hidden />
@@ -46,7 +46,7 @@ export default function ResumeSection({ resume }: Props) {
           </div>
         </article>
       ) : (
-        <div className="bento-card is-static flex max-w-3xl items-center gap-4 text-sm text-muted">
+        <div className="bento-card is-static flex w-full items-center gap-4 text-sm text-muted md:p-8">
           <FileText className="h-8 w-8 shrink-0 text-accent" aria-hidden />
           <p>A resume download will appear here once a PDF is uploaded.</p>
         </div>
