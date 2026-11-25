@@ -20,7 +20,7 @@ type Props = {
 };
 
 /** Transparent cutout portrait. Replaced when an owner upload exists. */
-const FALLBACK_PORTRAIT = "/images/pooja-portrait.webp?v=hair-clean-2";
+const FALLBACK_PORTRAIT = "/images/pooja-portrait.webp?v=pro-sharp-1";
 
 const BADGE_SLOTS = [
   { style: { top: "22%", left: "18%" }, depth: 18, delay: "0s" },
@@ -218,13 +218,16 @@ export default function HeroSection({
                   src={portrait}
                   alt={`Portrait of ${fullName}`}
                   width={768}
-                  height={962}
+                  height={951}
+                  sizes="(min-width: 1024px) 34rem, (min-width: 640px) 30rem, 24rem"
                   loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                   style={{ x: photoX, y: photoY }}
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className={`h-full w-auto max-w-none select-none object-contain object-bottom drop-shadow-[0_12px_20px_rgba(43,27,24,0.08)] ${portraitBlend}`}
+                  className={`h-full w-auto max-w-none select-none object-contain object-bottom drop-shadow-[0_12px_20px_rgba(43,27,24,0.06)] ${portraitBlend}`}
                   draggable={false}
                 />
               </div>
