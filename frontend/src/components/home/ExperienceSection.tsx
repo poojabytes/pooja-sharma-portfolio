@@ -18,6 +18,7 @@ export default function ExperienceSection({ experience, limit }: Props) {
   return (
     <Section id="experience" tone="mix" side="left">
       <SectionHeading
+        className="max-w-none"
         eyebrow="Experience"
         index="04"
         title="What I build."

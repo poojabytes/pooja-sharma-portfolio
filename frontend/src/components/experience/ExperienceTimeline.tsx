@@ -29,12 +29,12 @@ export default function ExperienceTimeline({ items }: Props) {
   }
 
   return (
-    <div ref={ref} className="relative mx-auto w-full max-w-3xl">
-      <div aria-hidden className="absolute bottom-0 left-3 top-0 w-px bg-border sm:left-4">
+    <div ref={ref} className="relative w-full min-w-0">
+      <div aria-hidden className="absolute bottom-0 left-3 top-0 w-px bg-border sm:left-4 md:left-5">
         <motion.div style={{ scaleY: progress }} className="h-full w-full origin-top bg-accent" />
       </div>
 
-      <ol className="space-y-8">
+      <ol className="space-y-6 sm:space-y-8">
         {items.map((item) => {
           const period = [
             formatMonthYear(item.start_date),
@@ -46,10 +46,10 @@ export default function ExperienceTimeline({ items }: Props) {
           const tech = splitTechnologies(item.technologies);
 
           return (
-            <li key={item.id} className="relative pl-10 sm:pl-12">
+            <li key={item.id} className="relative min-w-0 pl-10 sm:pl-12 md:pl-14">
               <span
                 aria-hidden
-                className="absolute left-3 top-6 z-10 h-3 w-3 -translate-x-1/2 rounded-full border-2 border-accent bg-background sm:left-4"
+                className="absolute left-3 top-6 z-10 h-3 w-3 -translate-x-1/2 rounded-full border-2 border-accent bg-background sm:left-4 md:left-5"
               >
                 {item.is_current ? (
                   <span className="absolute inset-0 animate-ping-slow rounded-full bg-accent/40" />
@@ -57,7 +57,7 @@ export default function ExperienceTimeline({ items }: Props) {
               </span>
 
               <motion.article
-                className="bento-card is-static"
+                className="bento-card is-static w-full min-w-0 md:p-8"
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}

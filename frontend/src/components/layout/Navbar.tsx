@@ -45,7 +45,7 @@ export default function Navbar() {
         className={[
           "glass-panel mx-auto flex items-center justify-between rounded-full px-3",
           "transition-[max-width,padding] duration-500 ease-out",
-          scrolled ? "max-w-[min(100%,56rem)] py-1.5" : "max-w-7xl py-2.5",
+          scrolled ? "max-w-7xl py-1.5" : "max-w-7xl py-2.5",
         ].join(" ")}
       >
         <Link to="/" className="flex items-center gap-2.5 pl-1 font-display text-sm font-bold" aria-label={`${SITE.name} home`}>
