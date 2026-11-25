@@ -162,19 +162,24 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
               <div className="relative mx-auto h-[min(24rem,calc(100svh-15rem))] w-full sm:h-[min(29rem,calc(100svh-16rem))] lg:h-[min(31rem,calc(100svh-17.5rem))]">
                 <motion.div
                   style={{ x: photoX, y: photoY }}
-                  className="absolute inset-0 overflow-hidden rounded-b-[2.75rem] sm:rounded-b-[3.25rem]"
+                  className="absolute inset-0"
                 >
                   <div className="relative h-full w-full">
-                    <motion.div
+                    {/* Semi-circle (dome) anchored to the bottom-center of the portrait wrapper */}
+                    <div
                       aria-hidden
-                      initial={{ scale: 0.93, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                      className="pointer-events-none absolute left-1/2 top-[46%] z-0 aspect-square w-[94%] -translate-x-1/2 -translate-y-1/2"
+                      className="pointer-events-none absolute inset-x-0 bottom-0 z-0 flex justify-center"
                     >
-                      <div className="absolute -inset-2 rounded-full border-2 border-[rgb(var(--c-peach)/0.85)] opacity-95" />
-                      <div className="absolute inset-0 rounded-full bg-[rgb(var(--c-peach))]" />
-                    </motion.div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                        className="relative aspect-[2/1] w-[120%] shrink-0 sm:w-[132%]"
+                      >
+                        <div className="absolute -inset-x-2 -top-2 bottom-0 rounded-t-full border-2 border-b-0 border-[rgb(var(--c-peach)/0.8)]" />
+                        <div className="absolute inset-0 rounded-t-full bg-[rgb(var(--c-peach))]" />
+                      </motion.div>
+                    </div>
 
                     <motion.img
                       src={portrait}
