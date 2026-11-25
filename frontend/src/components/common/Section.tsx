@@ -22,7 +22,7 @@ export default function Section({ id, tone = "violet", className = "", children 
       id={id}
       className={`section-anchor relative py-14 sm:py-20 md:py-28 ${banded ? "bg-secondary/70" : ""} ${className}`}
     >
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-5 md:px-6">{children}</div>
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
     </section>
   );
 }

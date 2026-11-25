@@ -3,11 +3,9 @@ import CertificatesSection from "@/components/home/CertificatesSection";
 import ContactSection from "@/components/home/ContactSection";
 import EducationSection from "@/components/home/EducationSection";
 import ExperienceSection from "@/components/home/ExperienceSection";
-import FeaturedProjectsSection from "@/components/home/FeaturedProjectsSection";
 import HeroSection from "@/components/home/HeroSection";
 import ResumeSection from "@/components/home/ResumeSection";
 import SkillsSection from "@/components/home/SkillsSection";
-import Marquee from "@/components/effects/Marquee";
 import Seo from "@/components/common/Seo";
 import ErrorState from "@/components/common/ErrorState";
 import LoadingState from "@/components/common/LoadingState";
@@ -16,19 +14,6 @@ import { SITE } from "@/constants/site";
 
 export default function Home() {
   const { data, loading, error, reload } = usePortfolio();
-
-  const featured =
-    data.featuredProjects.length > 0
-      ? data.featuredProjects
-      : data.projects.filter((p) => p.is_featured);
-
-  const marqueeItems =
-    data.skills.length > 0
-      ? data.skills.map((s) => s.name)
-      : (data.profile?.designation ?? SITE.headline)
-          .split("|")
-          .map((s) => s.trim())
-          .filter(Boolean);
 
   return (
     <>
@@ -46,13 +31,10 @@ export default function Home() {
         <>
           <HeroSection
             profile={data.profile}
-            skills={data.skills}
             socialLinks={data.socialLinks}
             resume={data.resume}
             education={data.education}
-            projectCount={data.projects.length}
           />
-          <Marquee items={marqueeItems} />
           <AboutSection
             profile={data.profile}
             education={data.education}
@@ -60,11 +42,6 @@ export default function Home() {
             skills={data.skills}
           />
           <SkillsSection skills={data.skills} />
-          <FeaturedProjectsSection
-            projects={featured}
-            allProjects={data.projects}
-            allCount={data.projects.length}
-          />
           <ExperienceSection experience={data.experience} limit={3} />
           <EducationSection education={data.education} />
           <CertificatesSection certificates={data.certificates} />

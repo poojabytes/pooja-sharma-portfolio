@@ -17,7 +17,8 @@ export function splitTechnologies(raw: string | null): string[] {
   return raw
     .split(/[,;|]/)
     .map((s) => s.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter((t) => t.toUpperCase() !== "HL7");
 }
 
 export function formatDateTime(iso: string): string {

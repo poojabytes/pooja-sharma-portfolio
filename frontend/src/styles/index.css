@@ -91,6 +91,34 @@
     );
   }
 
+  .hero-mesh-grid {
+    background-image:
+      linear-gradient(rgb(var(--c-accent) / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--c-accent) / 0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 20%, black 20%, transparent 72%);
+  }
+
+  @keyframes mesh-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0.55;
+    }
+    50% {
+      transform: translate3d(0, -6px, 0);
+      opacity: 0.85;
+    }
+  }
+
+  .hero-mesh-path {
+    animation: mesh-drift 22s ease-in-out infinite;
+  }
+
+  .hero-mesh-node {
+    animation: mesh-drift 16s ease-in-out infinite;
+  }
+
   /* ---------- Decorative helpers ---------- */
   /* Retained as a class name used by cards; the border simply tints on hover */
   .g-border:hover {

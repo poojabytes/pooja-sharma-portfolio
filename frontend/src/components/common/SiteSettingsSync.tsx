@@ -19,7 +19,7 @@ export default function SiteSettingsSync() {
     if (meta) {
       meta.setAttribute(
         "content",
-        `${SITE.name} — ${data.profile?.designation ?? SITE.headline}`,
+        `${SITE.name} — ${SITE.headline}`,
       );
     }
   }, [data.profile?.designation, data.publicSettings.site_title]);

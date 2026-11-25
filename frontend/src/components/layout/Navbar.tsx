@@ -12,7 +12,6 @@ import { mediaUrl } from "@/utils/mediaUrl";
 const items = [
   { id: "about", label: "About" },
   { id: "skills", label: "Skills" },
-  { id: "projects", label: "Work" },
   { id: "experience", label: "Experience" },
   { id: "contact", label: "Contact" },
 ] as const;
@@ -21,7 +20,6 @@ const ids = items.map((i) => i.id);
 
 const ROUTE_TO_ID: Record<string, string> = {
   "/about": "about",
-  "/projects": "projects",
   "/experience": "experience",
   "/contact": "contact",
 };
@@ -47,7 +45,7 @@ export default function Navbar() {
         className={[
           "glass-panel mx-auto flex items-center justify-between rounded-full px-3",
           "transition-[max-width,padding] duration-500 ease-out",
-          scrolled ? "max-w-[min(100%,52rem)] py-1.5" : "max-w-6xl py-2.5",
+          scrolled ? "max-w-[min(100%,56rem)] py-1.5" : "max-w-7xl py-2.5",
         ].join(" ")}
       >
         <Link to="/" className="flex items-center gap-2.5 pl-1 font-display text-sm font-bold" aria-label={`${SITE.name} home`}>
@@ -145,7 +143,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.98 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="glass-panel mx-auto mt-2 max-w-6xl rounded-2xl p-2 md:hidden"
+            className="glass-panel mx-auto mt-2 max-w-7xl rounded-2xl p-2 md:hidden"
           >
             <ul className="flex flex-col">
               {items.map((item, i) => (

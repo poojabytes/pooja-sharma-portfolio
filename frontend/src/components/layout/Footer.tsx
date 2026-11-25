@@ -20,11 +20,11 @@ export default function Footer({ socialLinks, email }: Props) {
 
   return (
     <footer className="relative mt-10 border-t border-border">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 md:flex-row md:items-end md:justify-between md:px-6">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-10 md:flex-row md:items-end md:justify-between md:px-6 lg:px-8">
         <div>
           <p className="font-display text-lg font-bold">{SITE.name}</p>
           <p className="mt-1 max-w-sm text-sm text-muted">
-            Full-Stack Developer (MERN) · AI/ML Enthusiast
+            Full Stack Developer · MERN & Python backends
           </p>
           <p className="mt-6 text-xs text-muted">
             © {year} {SITE.name}. Built with React &amp; FastAPI.

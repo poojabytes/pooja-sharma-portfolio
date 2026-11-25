@@ -2,7 +2,7 @@ import { Briefcase, Code2, GraduationCap, MapPin, Sparkles } from "lucide-react"
 import type { ReactNode } from "react";
 import Section from "@/components/common/Section";
 import SectionHeading from "@/components/common/SectionHeading";
-import TiltCard from "@/components/effects/TiltCard";
+import { publicRole } from "@/constants/site";
 import ProfileEditor from "@/components/owner/editors/ProfileEditor";
 import type { Education, Experience, Profile, Skill } from "@/types/portfolio";
 import { formatYearRange } from "@/utils/format";
@@ -18,35 +18,28 @@ function BentoCard({
   className,
   label,
   icon,
-  delay,
   children,
 }: {
-  className: string;
+  className?: string;
   label: string;
   icon: ReactNode;
-  delay: number;
   children: ReactNode;
 }) {
   return (
-    <TiltCard delay={delay} max={5} className={`bento-card g-border ${className}`}>
-      <div className="relative z-10 flex h-full flex-col">
-        <div className="mb-5 flex items-center justify-between">
-          <p className="label">{label}</p>
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-accent/10 text-accent transition-transform duration-700 group-hover:rotate-[360deg]">
-            {icon}
-          </span>
-        </div>
-        {children}
+    <article className={`bento-card is-static flex h-full min-h-[9.5rem] flex-col ${className ?? ""}`}>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <p className="label">{label}</p>
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border bg-accent/10 text-accent">
+          {icon}
+        </span>
       </div>
-    </TiltCard>
+      <div className="flex flex-1 flex-col">{children}</div>
+    </article>
   );
 }
 
 export default function AboutSection({ profile, education, experience, skills }: Props) {
-  const roles = (profile?.designation ?? "")
-    .split("|")
-    .map((s) => s.trim())
-    .filter(Boolean);
+  const role = publicRole(profile?.designation);
   const edu = education[0];
   const current = experience.find((e) => e.is_current);
   const categories = [...new Set(skills.map((s) => s.category))];
@@ -55,96 +48,53 @@ export default function AboutSection({ profile, education, experience, skills }:
     <Section id="about" tone="violet" side="left">
       <SectionHeading eyebrow="About" index="01" title="Who am I?" highlight={["am"]} />
 
-      <div className="grid auto-rows-auto gap-4 md:grid-cols-12 md:grid-flow-dense">
-        <BentoCard
-          className="md:col-span-7 md:row-span-2"
-          label="Introduction"
-          icon={<Sparkles className="h-5 w-5" />}
-          delay={0}
-        >
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <BentoCard label="Introduction" icon={<Sparkles className="h-4 w-4" />} className="md:col-span-2 xl:col-span-2">
           {profile?.biography ? (
-            <p className="whitespace-pre-wrap text-lg leading-relaxed text-foreground/90 md:text-xl">
+            <p className="text-base leading-relaxed text-foreground/90 md:text-lg">
               {profile.biography}
             </p>
           ) : (
-            <p className="text-muted">
-              Your introduction will appear here once you add a biography.
-            </p>
+            <p className="text-muted">Your introduction will appear here once you add a biography.</p>
           )}
         </BentoCard>
 
-        {roles.length > 0 ? (
-          <BentoCard
-            className="md:col-span-5"
-            label="Professional identity"
-            icon={<Code2 className="h-5 w-5" />}
-            delay={0.08}
-          >
-            <ul className="space-y-2">
-              {roles.map((r) => (
-                <li key={r} className="flex items-center gap-3 font-display text-lg font-semibold">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
-                  {r}
-                </li>
-              ))}
-            </ul>
-          </BentoCard>
-        ) : null}
+        <BentoCard label="Professional identity" icon={<Code2 className="h-4 w-4" />}>
+          <p className="font-display text-lg font-semibold text-foreground">{role}</p>
+        </BentoCard>
 
         {edu ? (
-          <BentoCard
-            className="md:col-span-5"
-            label="Education"
-            icon={<GraduationCap className="h-5 w-5" />}
-            delay={0.12}
-          >
+          <BentoCard label="Education" icon={<GraduationCap className="h-4 w-4" />}>
             <p className="text-xs font-semibold uppercase tracking-label text-accent-strong">
               {formatYearRange(edu.start_year, edu.end_year)}
             </p>
-            <p className="mt-2 font-display text-lg font-bold">{edu.degree}</p>
-            <p className="text-sm text-muted">{edu.institution}</p>
-          </BentoCard>
-        ) : null}
-
-        {profile?.location ? (
-          <BentoCard
-            className="md:col-span-4"
-            label="Location"
-            icon={<MapPin className="h-5 w-5" />}
-            delay={0.16}
-          >
-            <div className="mt-auto flex items-center gap-3">
-              <span className="relative flex h-3 w-3" aria-hidden>
-                <span className="absolute inset-0 animate-ping-slow rounded-full bg-accent" />
-                <span className="relative h-3 w-3 rounded-full bg-accent" />
-              </span>
-              <p className="font-display text-xl font-bold">{profile.location}</p>
-            </div>
+            <p className="mt-2 font-display text-lg font-bold leading-snug">{edu.degree}</p>
+            <p className="mt-1 text-sm text-muted">{edu.institution}</p>
           </BentoCard>
         ) : null}
 
         {current ? (
-          <BentoCard
-            className="md:col-span-4"
-            label="Current role"
-            icon={<Briefcase className="h-5 w-5" />}
-            delay={0.2}
-          >
-            <p className="font-display text-lg font-bold">{current.designation}</p>
-            <p className="text-sm text-accent">{current.company}</p>
+          <BentoCard label="Current role" icon={<Briefcase className="h-4 w-4" />}>
+            <p className="font-display text-lg font-bold leading-snug">{current.designation}</p>
+            <p className="mt-1 text-sm text-accent">{current.company}</p>
+          </BentoCard>
+        ) : null}
+
+        {profile?.location ? (
+          <BentoCard label="Location" icon={<MapPin className="h-4 w-4" />}>
+            <p className="mt-auto font-display text-xl font-bold">{profile.location}</p>
           </BentoCard>
         ) : null}
 
         {categories.length > 0 ? (
           <BentoCard
-            className={current || profile?.location ? "md:col-span-4" : "md:col-span-8"}
             label="Technical interests"
-            icon={<Sparkles className="h-5 w-5" />}
-            delay={0.24}
+            icon={<Sparkles className="h-4 w-4" />}
+            className={!profile?.location && !current ? "md:col-span-2" : undefined}
           >
             <ul className="flex flex-wrap gap-2">
               {categories.map((c) => (
-                <li key={c} className="chip transition hover:border-accent/50 hover:text-foreground">
+                <li key={c} className="chip">
                   {c}
                 </li>
               ))}

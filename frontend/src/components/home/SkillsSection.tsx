@@ -129,7 +129,7 @@ export default function SkillsSection({ skills }: Props) {
                     exit={{ opacity: 0, y: 10 }}
                     viewport={{ once: true, margin: "-40px" }}
                     transition={{ duration: 0.4, delay: Math.min(gi, 6) * 0.04 }}
-                    className="bento-card !p-5 sm:!p-6"
+                    className="bento-card is-static !p-5 sm:!p-6"
                   >
                     <header className="mb-4 flex items-center gap-3">
                       <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-border bg-accent/10 text-accent">
