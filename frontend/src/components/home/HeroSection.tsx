@@ -98,91 +98,103 @@ export default function HeroSection({ profile, socialLinks, education }: Props) 
     <section className="relative overflow-hidden pb-4">
       <HeroTechMesh />
       <div className="relative mx-auto max-w-7xl px-4 pt-8 text-center sm:pt-10 md:px-6 md:pt-12 lg:px-8">
-        <div className="relative">
-          <h1 className="mx-auto max-w-3xl font-display text-[2rem] font-extrabold leading-[1.12] tracking-tight text-foreground sm:text-5xl md:text-6xl">
-            <SplitText
-              text={`I'm ${firstName},`}
-              highlight={[firstName]}
-              whenInView={false}
-              delay={0.1}
-              className="block"
-            />
-            <SplitText text={role} whenInView={false} delay={0.28} className="block" />
-          </h1>
-        </div>
+        <h1 className="mx-auto flex max-w-3xl flex-col items-center gap-1 px-2 text-center font-display text-[2rem] font-extrabold leading-[1.12] tracking-tight text-foreground sm:gap-2 sm:text-5xl md:text-6xl">
+          <SplitText
+            text={`I'm ${firstName},`}
+            highlight={[firstName]}
+            whenInView={false}
+            delay={0.1}
+            className="block w-full text-center"
+          />
+          <SplitText
+            text={role}
+            whenInView={false}
+            delay={0.28}
+            className="block w-full max-w-[18ch] text-center text-[1.55rem] leading-tight sm:max-w-none sm:text-[inherit]"
+          />
+        </h1>
 
-        <div className="relative mx-auto mt-8 w-full max-w-5xl overflow-x-clip">
-          <div className="relative mx-auto h-[23rem] w-full max-w-[24rem] sm:h-[30rem] sm:max-w-[30rem] lg:h-[34rem] lg:max-w-[38rem] xl:max-w-[42rem]">
-            <motion.div
-              style={{ x: photoX, y: photoY }}
-              className="absolute inset-0 flex items-end justify-center"
-            >
-              <div className="relative flex h-[97%] w-full max-w-[min(100%,22rem)] items-end justify-center sm:max-w-[28rem] lg:max-w-[36rem]">
-                <motion.div
-                  aria-hidden
-                  initial={{ scale: 0.92, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-                  className="pointer-events-none absolute bottom-[4%] left-1/2 z-0 aspect-square w-[88%] max-w-[20.5rem] -translate-x-1/2 sm:bottom-[3%] sm:w-[90%] sm:max-w-[26rem] lg:max-w-[32rem]"
-                >
-                  <div className="h-full w-full rounded-full bg-[rgb(var(--c-peach))]" />
-                </motion.div>
-
-                <motion.img
-                  src={portrait}
-                  alt={`Portrait of ${fullName}`}
-                  width={768}
-                  height={951}
-                  sizes="(min-width: 1024px) 38rem, (min-width: 640px) 30rem, 24rem"
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="async"
-                  initial={{ opacity: 0, y: 32 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.85, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  className={`relative z-[1] mx-auto h-full w-auto max-w-full select-none object-contain object-bottom drop-shadow-[0_10px_24px_rgba(43,27,24,0.07)] ${portraitBlend}`}
-                  draggable={false}
-                />
-              </div>
-            </motion.div>
-
+        <div className="relative mx-auto mt-6 w-full max-w-6xl overflow-x-clip sm:mt-8">
+          <div className="grid items-end gap-8 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6 xl:gap-10">
             <motion.div
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.55, duration: 0.55 }}
-              className="absolute left-0 top-[20%] z-10 hidden text-left lg:block"
+              className="hidden pb-32 text-left lg:block lg:max-w-[16rem] xl:max-w-[18rem]"
             >
               {quote}
             </motion.div>
+
+            <div className="relative mx-auto w-full max-w-[21rem] sm:max-w-[27rem] lg:w-[26rem] lg:max-w-[26rem] xl:w-[28rem] xl:max-w-[28rem]">
+              <div className="relative h-[23rem] sm:h-[29rem] lg:h-[32rem] xl:h-[34rem]">
+                <motion.div
+                  style={{ x: photoX, y: photoY }}
+                  className="absolute inset-0 flex items-end justify-center"
+                >
+                  <div className="relative h-[94%] w-[82%]">
+                    <motion.div
+                      aria-hidden
+                      initial={{ scale: 0.92, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.8, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+                      className="absolute bottom-[2%] left-1/2 z-0 aspect-square w-full -translate-x-1/2 rounded-full bg-[rgb(var(--c-peach))]"
+                    />
+
+                    <motion.img
+                      src={portrait}
+                      alt={`Portrait of ${fullName}`}
+                      width={768}
+                      height={951}
+                      sizes="(min-width: 1024px) 28rem, (min-width: 640px) 27rem, 21rem"
+                      loading="eager"
+                      fetchPriority="high"
+                      decoding="async"
+                      initial={{ opacity: 0, y: 32 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.85, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                      className={`relative z-[1] mx-auto h-full w-full select-none object-contain object-bottom drop-shadow-[0_10px_24px_rgba(43,27,24,0.07)] ${portraitBlend}`}
+                      draggable={false}
+                    />
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.75, duration: 0.5 }}
+                  className="absolute inset-x-0 bottom-3 z-20 flex flex-col items-stretch gap-2 px-1 sm:bottom-5 sm:flex-row sm:justify-center sm:gap-3 sm:px-0"
+                >
+                  <Magnetic className="sm:w-auto">
+                    <HashLink
+                      id="resume"
+                      className="btn-primary group w-full justify-center sm:min-w-[9rem] sm:w-auto"
+                    >
+                      Portfolio
+                      <ArrowUpRight
+                        className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        aria-hidden
+                      />
+                    </HashLink>
+                  </Magnetic>
+                  <Magnetic className="sm:w-auto">
+                    <HashLink
+                      id="contact"
+                      className="btn-ghost w-full justify-center !bg-white sm:min-w-[9rem] sm:w-auto"
+                    >
+                      Hire Me
+                    </HashLink>
+                  </Magnetic>
+                </motion.div>
+              </div>
+            </div>
+
             <motion.div
               initial={{ opacity: 0, x: 16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.65, duration: 0.55 }}
-              className="absolute right-0 top-[22%] z-10 hidden text-right lg:block"
+              className="hidden pb-32 text-right lg:block lg:justify-self-end lg:max-w-[16rem] xl:max-w-[18rem]"
             >
               {stats}
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.75, duration: 0.5 }}
-              className="absolute inset-x-0 bottom-4 z-20 flex items-center justify-center gap-3 px-2 sm:bottom-5"
-            >
-              <Magnetic className="min-w-0 flex-1 sm:flex-none">
-                <HashLink id="resume" className="btn-primary group w-full min-w-[8.25rem] justify-center sm:w-auto sm:min-w-[9rem]">
-                  Portfolio
-                  <ArrowUpRight
-                    className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                    aria-hidden
-                  />
-                </HashLink>
-              </Magnetic>
-              <Magnetic className="min-w-0 flex-1 sm:flex-none">
-                <HashLink id="contact" className="btn-ghost w-full min-w-[8.25rem] justify-center !bg-white sm:w-auto sm:min-w-[9rem]">
-                  Hire Me
-                </HashLink>
-              </Magnetic>
             </motion.div>
           </div>
         </div>
